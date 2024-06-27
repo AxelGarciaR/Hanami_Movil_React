@@ -45,9 +45,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFC8DD'
     },
     image: {
-        width: '80%',
+        width: '65%',
         height: 200,
         marginBottom: 20,
+        marginTop: 30,
     },
     buttonContainer: {
         flexDirection: 'row',

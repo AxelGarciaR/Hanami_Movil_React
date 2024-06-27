@@ -11,50 +11,52 @@ const RegisterScreen = ({ onNavigate }) => {
     const [nombrePerfil, setNombrePerfil] = useState('');
 
     return (
-        <View style={styles.formContainer}>
-            <TextInput
-                placeholder='Nombres'
-                value={nombres}
-                onChangeText={setNombres}
-                style={styles.input}
-            />
-            <TextInput
-                placeholder='Apellidos'
-                value={apellidos}
-                onChangeText={setApellidos}
-                style={styles.input}
-            />
-            <TextInput
-                placeholder='Correo electrónico'
-                value={email}
-                onChangeText={setEmail}
-                style={styles.input}
-            />
-            <TextInput
-                placeholder='Clave'
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry
-                style={styles.input}
-            />
-            <TextInput
-                placeholder='Dirección'
-                value={direccion}
-                onChangeText={setDireccion}
-                style={styles.input}
-            />
-            <TextInput
-                placeholder='Nombre de perfil'
-                value={nombrePerfil}
-                onChangeText={setNombrePerfil}
-                style={styles.input}
-            />
-            <Button mode="contained" onPress={() => {}} style={styles.actionButton}>
-                Siguiente
-            </Button>
-            <TouchableOpacity onPress={() => onNavigate('login')}>
-                <Text style={styles.linkText}>¿Ya tienes cuenta? Login</Text>
-            </TouchableOpacity>
+        <View style={styles.contentContainer}>
+            <View style={styles.formContainer}>
+                <TextInput
+                    placeholder='Nombres'
+                    value={nombres}
+                    onChangeText={setNombres}
+                    style={styles.input}
+                />
+                <TextInput
+                    placeholder='Apellidos'
+                    value={apellidos}
+                    onChangeText={setApellidos}
+                    style={styles.input}
+                />
+                <TextInput
+                    placeholder='Correo electrónico'
+                    value={email}
+                    onChangeText={setEmail}
+                    style={styles.input}
+                />
+                <TextInput
+                    placeholder='Clave'
+                    value={password}
+                    onChangeText={setPassword}
+                    secureTextEntry
+                    style={styles.input}
+                />
+                <TextInput
+                    placeholder='Dirección'
+                    value={direccion}
+                    onChangeText={setDireccion}
+                    style={styles.input}
+                />
+                <TextInput
+                    placeholder='Nombre de perfil'
+                    value={nombrePerfil}
+                    onChangeText={setNombrePerfil}
+                    style={styles.input}
+                />
+                <Button mode="contained" onPress={() => { }} style={styles.actionButton}>
+                    Siguiente
+                </Button>
+                <TouchableOpacity onPress={() => onNavigate('login')}>
+                    <Text style={styles.linkText}>¿Ya tienes cuenta? Login</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     );
 };
@@ -70,6 +72,16 @@ const styles = StyleSheet.create({
         padding: 10,
         marginBottom: 10,
         width: '100%',
+    },
+    contentContainer: {
+        flex: 1,
+        width: '110%',
+        backgroundColor: 'white',
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        paddingTop: 20,
+        paddingHorizontal: 20,
+        marginTop: -20, // Ajuste para superponer sobre el contenedor principal
     },
     actionButton: {
         backgroundColor: '#FF8BA7',
