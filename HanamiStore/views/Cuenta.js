@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { View, Image, StyleSheet, TextInput } from 'react-native'; // Importa TextInput en lugar de Input
-import { Button, Text } from 'react-native-paper';
+import { View, Image, StyleSheet } from 'react-native';
+import { Button } from 'react-native-paper';
+import LoginScreen from '../components/Login';
+import RegisterScreen from '../components/Registro';
 
 const Cuenta = () => {
     const [screen, setScreen] = useState('login');
@@ -65,26 +67,6 @@ const styles = StyleSheet.create({
     },
     selectedLabel: {
         color: 'white',
-    },
-    formContainer: {
-        width: '100%',
-        paddingHorizontal: 20,
-    },
-    input: {
-        borderWidth: 1,
-        borderColor: '#ccc',
-        padding: 10,
-        marginBottom: 10,
-        width: '100%',
-    },
-    actionButton: {
-        backgroundColor: '#FF8BA7',
-        marginTop: 10,
-    },
-    linkText: {
-        marginTop: 10,
-        color: '#FF8BA7',
-        textAlign: 'center',
     },
 });
 
