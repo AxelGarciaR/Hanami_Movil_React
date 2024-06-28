@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { View, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import { Text } from 'react-native-paper';
 import ButtonAction from '../components/ButtonAction';
 
-const LoginScreen = ({ onNavigate }) => {
+const LoginScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -23,11 +25,22 @@ const LoginScreen = ({ onNavigate }) => {
                     secureTextEntry
                     style={styles.input}
                 />
-                <ButtonAction mode="contained" onPress={() => { }} style={styles.actionButton}>
+                <ButtonAction
+                    mode="contained"
+                    onPress={() => {
+                        // Aquí puedes realizar la lógica de autenticación
+                        // y luego navegar a la pantalla adecuada
+                        navigation.navigate('Home'); // Cambia 'Home' por el nombre de tu pantalla principal
+                    }}
+                    style={styles.actionButton}
+                >
                     Login
                 </ButtonAction>
-                <TouchableOpacity onPress={() => onNavigate('register')}>
+                <TouchableOpacity onPress={() => navigation.navigate('Register')}>
                     <Text style={styles.linkText}>¿No tienes cuenta? Regístrate</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate('Recuperacion')}>
+                    <Text style={styles.linkText}>¿Olvidaste tu contraseña?</Text>
                 </TouchableOpacity>
             </View>
         </View>

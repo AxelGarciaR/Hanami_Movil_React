@@ -8,7 +8,7 @@ const Inicio = ({ navigation }) => {
             <Image
                 source={require('../assets/hanami.png')}
                 style={styles.image}
-                resizeMode="cover"
+                resizeMode="cover"a
             />
             <Text style={styles.text}>
                 HANAMI{'\n'}Beauty and care

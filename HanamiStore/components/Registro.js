@@ -3,7 +3,7 @@ import { View, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-nati
 import { Button, Text, Dialog, Portal } from 'react-native-paper';
 import ButtonAction from '../components/ButtonAction';
 
-const RegisterScreen = ({ onNavigate }) => {
+const RegisterScreen = ({ navigation }) => {
     const [nombres, setNombres] = useState('');
     const [apellidos, setApellidos] = useState('');
     const [email, setEmail] = useState('');
@@ -15,13 +15,13 @@ const RegisterScreen = ({ onNavigate }) => {
     const showDialog = () => setRegistroExitoso(true);
     const hideDialog = () => {
         setRegistroExitoso(false);
-        onNavigate('login'); // Redirige al login
+        navigation.navigate('Login'); // Redirige al login
     };
 
     return (
         <View style={styles.contentContainer}>
             <View style={styles.formContainer}>
-                <TextInput
+                <TextInput  
                     placeholder='Nombres'
                     value={nombres}
                     onChangeText={setNombres}
@@ -58,10 +58,14 @@ const RegisterScreen = ({ onNavigate }) => {
                     onChangeText={setNombrePerfil}
                     style={styles.input}
                 />
-                <ButtonAction  mode="contained" onPress={showDialog} style={styles.actionButton}>
+                <ButtonAction
+                    mode="contained"
+                    onPress={showDialog}
+                    style={styles.actionButton}
+                >
                     Crear
-                </ButtonAction >
-                <TouchableOpacity onPress={() => onNavigate('login')}>
+                </ButtonAction>
+                <TouchableOpacity onPress={() => navigation.navigate('Login')}>
                     <Text style={styles.linkText}>¿Ya tienes cuenta? Login</Text>
                 </TouchableOpacity>
 
