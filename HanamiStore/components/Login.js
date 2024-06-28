@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import { Button, Text } from 'react-native-paper';
+import { Text } from 'react-native-paper';
+import ButtonAction from '../components/ButtonAction';
 
 const LoginScreen = ({ onNavigate }) => {
     const [email, setEmail] = useState('');
@@ -22,9 +23,9 @@ const LoginScreen = ({ onNavigate }) => {
                     secureTextEntry
                     style={styles.input}
                 />
-                <Button mode="contained" onPress={() => { }} style={styles.actionButton}>
+                <ButtonAction mode="contained" onPress={() => { }} style={styles.actionButton}>
                     Login
-                </Button>
+                </ButtonAction>
                 <TouchableOpacity onPress={() => onNavigate('register')}>
                     <Text style={styles.linkText}>¿No tienes cuenta? Regístrate</Text>
                 </TouchableOpacity>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { View, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import { Button, Text } from 'react-native-paper';
+import { View, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { Button, Text, Dialog, Portal } from 'react-native-paper';
+import ButtonAction from '../components/ButtonAction';
 
 const RegisterScreen = ({ onNavigate }) => {
     const [nombres, setNombres] = useState('');
@@ -9,6 +10,13 @@ const RegisterScreen = ({ onNavigate }) => {
     const [password, setPassword] = useState('');
     const [direccion, setDireccion] = useState('');
     const [nombrePerfil, setNombrePerfil] = useState('');
+    const [registroExitoso, setRegistroExitoso] = useState(false);
+
+    const showDialog = () => setRegistroExitoso(true);
+    const hideDialog = () => {
+        setRegistroExitoso(false);
+        onNavigate('login'); // Redirige al login
+    };
 
     return (
         <View style={styles.contentContainer}>
@@ -50,12 +58,24 @@ const RegisterScreen = ({ onNavigate }) => {
                     onChangeText={setNombrePerfil}
                     style={styles.input}
                 />
-                <Button mode="contained" onPress={() => { }} style={styles.actionButton}>
-                    Siguiente
-                </Button>
+                <ButtonAction  mode="contained" onPress={showDialog} style={styles.actionButton}>
+                    Crear
+                </ButtonAction >
                 <TouchableOpacity onPress={() => onNavigate('login')}>
                     <Text style={styles.linkText}>¿Ya tienes cuenta? Login</Text>
                 </TouchableOpacity>
+
+                <Portal>
+                    <Dialog visible={registroExitoso} onDismiss={hideDialog}>
+                        <View style={styles.dialogContent}>
+                            <Image
+                                source={require('../assets/cheque.png')}
+                                style={styles.dialogImage}
+                            />
+                            <Text style={styles.dialogText}>¡Registro exitoso!</Text>
+                        </View>
+                    </Dialog>
+                </Portal>
             </View>
         </View>
     );
@@ -90,6 +110,20 @@ const styles = StyleSheet.create({
     linkText: {
         marginTop: 10,
         color: '#FF8BA7',
+        textAlign: 'center',
+    },
+    dialogContent: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 20,
+    },
+    dialogImage: {
+        width: 100,
+        height: 100,
+        marginBottom: 20,
+    },
+    dialogText: {
+        fontSize: 18,
         textAlign: 'center',
     },
 });
