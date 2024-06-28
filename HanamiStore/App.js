@@ -18,10 +18,10 @@ export default function App() {
   return (
     <PaperProvider>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="NuevaContra">
-          {/*  <Stack.Screen name="Inicio" component={Inicio} options={{ headerShown: false }} />
+        <Stack.Navigator initialRouteName="Inicio">
+          <Stack.Screen name="Inicio" component={Inicio} options={{ headerShown: false }} />
           <Stack.Screen name="Cuenta" component={Cuenta} options={{ headerShown: false }} />
-          <Stack.Screen name="Recuperacion" component={Recuperacion} options={{ headerShown: false }} /> */}
+          <Stack.Screen name="Recuperacion" component={Recuperacion} options={{ headerShown: false }} />
           <Stack.Screen name="NuevaContra" component={NuevaContra} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
