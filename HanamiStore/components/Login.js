@@ -36,7 +36,7 @@ const LoginScreen = ({ navigation }) => {
                 >
                     Login
                 </ButtonAction>
-                <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+                <TouchableOpacity onPress={() => navigation.navigate('RegisterScreen')}>
                     <Text style={styles.linkText}>¿No tienes cuenta? Regístrate</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => navigation.navigate('Recuperacion')}>

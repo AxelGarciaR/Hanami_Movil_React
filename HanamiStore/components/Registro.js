@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { Button, Text, Dialog, Portal } from 'react-native-paper';
-import ButtonAction from '../components/ButtonAction';
+import ButtonAction from './ButtonAction';
 
 const RegisterScreen = ({ navigation }) => {
     const [nombres, setNombres] = useState('');
@@ -15,7 +15,7 @@ const RegisterScreen = ({ navigation }) => {
     const showDialog = () => setRegistroExitoso(true);
     const hideDialog = () => {
         setRegistroExitoso(false);
-        navigation.navigate('Login'); // Redirige al login
+        navigation.navigate('LoginScreen'); // Redirige al login
     };
 
     return (
@@ -65,7 +65,7 @@ const RegisterScreen = ({ navigation }) => {
                 >
                     Crear
                 </ButtonAction>
-                <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+                <TouchableOpacity onPress={() => navigation.navigate('LoginScreen')}>
                     <Text style={styles.linkText}>¿Ya tienes cuenta? Login</Text>
                 </TouchableOpacity>
 
