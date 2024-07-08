@@ -13,6 +13,7 @@ import CodigoContra from './views/CodigoContra';
 import Dashboard from './views/Dashboard';
 import Carrito from './views/Carrito';
 import Productos from './views/Productos';
+import Perfil from './views/Perfil';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -48,6 +49,7 @@ export default function App() {
                 <Stack.Screen name="Dashboard" component={Dashboard} options={{ headerShown: false }} />
                 <Stack.Screen name="Carrito" component={Carrito} options={{ headerShown: false }} />
                 <Stack.Screen name="Productos" component={Productos} options={{ headerShown: false }} />
+                <Stack.Screen name="Perfil" component={Perfil} />
               </Stack.Navigator>
             )}
           </Drawer.Screen>
