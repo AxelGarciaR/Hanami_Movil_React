@@ -15,7 +15,7 @@ const RegisterScreen = ({ navigation }) => {
     const showDialog = () => setRegistroExitoso(true);
     const hideDialog = () => {
         setRegistroExitoso(false);
-        navigation.navigate('LoginScreen'); // Redirige al login
+        navigation.navigate('Cuenta'); // Redirige al login
     };
 
     return (
@@ -65,7 +65,7 @@ const RegisterScreen = ({ navigation }) => {
                 >
                     Crear
                 </ButtonAction>
-                <TouchableOpacity onPress={() => navigation.navigate('LoginScreen')}>
+                <TouchableOpacity onPress={() => navigation.navigate('Login')}>
                     <Text style={styles.linkText}>¿Ya tienes cuenta? Login</Text>
                 </TouchableOpacity>
 

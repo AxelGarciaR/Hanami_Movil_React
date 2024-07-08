@@ -25,20 +25,15 @@ const LoginScreen = ({ navigation }) => {
                     secureTextEntry
                     style={styles.input}
                 />
-                <ButtonAction
-                    mode="contained"
-                    onPress={() => {
-                        // Aquí puedes realizar la lógica de autenticación
-                        // y luego navegar a la pantalla adecuada
-                        navigation.navigate('Home'); // Cambia 'Home' por el nombre de tu pantalla principal
-                    }}
-                    style={styles.actionButton}
-                >
-                    Login
-                </ButtonAction>
-                <TouchableOpacity onPress={() => navigation.navigate('RegisterScreen')}>
+
+                <TouchableOpacity style={styles.actionButton} onPress={() => navigation.navigate('Dashboard')}>
+                    <Text style={styles.LoginText}>Login</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity>
                     <Text style={styles.linkText}>¿No tienes cuenta? Regístrate</Text>
                 </TouchableOpacity>
+                
                 <TouchableOpacity onPress={() => navigation.navigate('Recuperacion')}>
                     <Text style={styles.linkText}>¿Olvidaste tu contraseña?</Text>
                 </TouchableOpacity>
@@ -72,10 +67,16 @@ const styles = StyleSheet.create({
     actionButton: {
         backgroundColor: '#FF8BA7',
         marginTop: 10,
+        padding: 12,
+        alignItems: 'center',
     },
     linkText: {
         marginTop: 10,
         color: '#FF8BA7',
+        textAlign: 'center',
+    },
+    LoginText: {
+        color: '#fff',
         textAlign: 'center',
     },
 });

@@ -1,9 +1,17 @@
-npm install react-native-reanimated@latest
-npm install @react-navigation/native @react-navigation/stack
-npm install @react-navigation/drawer
+# Instalar react-native-reanimated
+npm install react-native-reanimated@~3.10.1
+
+# Instalar react-navigation y sus dependencias
+npm install @react-navigation/native @react-navigation/stack @react-navigation/drawer 
+npm install @react-native-community/masked-view
+
+# Instalar react-native-paper
 npm install react-native-paper
-npm install @react-navigation/native
-npm install react-native-paper react-navigation react-navigation-drawer
-npm install @react-navigation/stack
-npm install react-native-gesture-handler react-native-reanimated react-native-screens react-native-safe-area-context @react-native-community/masked-view
-npm install react-native-paper
+
+# Instalar otras dependencias necesarias para navegación y animaciones
+npm install react-native-gesture-handler@~2.16.1 react-native-reanimated@~3.10.1
+npm install react-native-screens@3.31.1 react-native-safe-area-context@4.10.1
+
+# Actualizar expo y react-native a las versiones esperadas
+npm install expo@~51.0.17
+npm install react-native@0.74.3

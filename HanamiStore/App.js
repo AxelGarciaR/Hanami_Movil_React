@@ -5,6 +5,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
 import { Provider as PaperProvider, Drawer as PaperDrawer } from 'react-native-paper';
 
+import Login from './components/Login';
+import Registro from './components/Registro';
 import Cuenta from './views/Cuenta';
 import Inicio from './views/Inicio';
 import Recuperacion from './views/Recuperacion';
@@ -40,9 +42,11 @@ export default function App() {
         <Drawer.Navigator drawerContent={props => <DrawerContent {...props} />}>
           <Drawer.Screen name="Home">
             {() => (
-              <Stack.Navigator initialRouteName="Productos">
+              <Stack.Navigator initialRouteName="Inicio">
                 <Stack.Screen name="Inicio" component={Inicio} options={{ headerShown: false }} />
                 <Stack.Screen name="Cuenta" component={Cuenta} options={{ headerShown: false }} />
+                <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+                <Stack.Screen name="Registro" component={Registro} options={{ headerShown: false }} />
                 <Stack.Screen name="Recuperacion" component={Recuperacion} options={{ headerShown: false }} />
                 <Stack.Screen name="NuevaContra" component={NuevaContra} options={{ headerShown: false }} />
                 <Stack.Screen name="CodigoContra" component={CodigoContra} options={{ headerShown: false }} />

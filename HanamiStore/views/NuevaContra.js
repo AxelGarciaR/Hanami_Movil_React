@@ -15,7 +15,7 @@ const NuevaContra = ({ navigation }) => {
 
     const hideDialog = () => {
         setCambioDeContraExitoso(false);
-        navigation.navigate('LoginScreen');
+        navigation.navigate('Cuenta');
     };
 
     return (

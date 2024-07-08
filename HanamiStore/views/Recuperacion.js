@@ -41,7 +41,7 @@ const Recuperacion = ({ navigation }) => {
                     >
                         Enviar código
                     </ButtonAction>
-                    <TouchableOpacity onPress={() => navigation.navigate('login')}>
+                    <TouchableOpacity onPress={() => navigation.navigate('Cuenta')}>
                         <Text style={styles.linkText}>Regresar al inicio de sesión</Text>
                     </TouchableOpacity>
                 </View>

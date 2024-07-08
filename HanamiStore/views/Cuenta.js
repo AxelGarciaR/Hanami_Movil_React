@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { View, Image, StyleSheet } from 'react-native';
 import { Button } from 'react-native-paper';
-import LoginScreen from '../components/Login';
-import RegisterScreen from '../components/Registro';
+import LoginScreen from '../components/Login'; // Asegúrate de importar el componente correcto
+import RegisterScreen from '../components/Registro'; // Asegúrate de importar el componente correcto
 
-const Cuenta = () => {
+const Cuenta = ({ navigation }) => {
     const [screen, setScreen] = useState('login');
 
     return (
@@ -32,7 +32,7 @@ const Cuenta = () => {
                     Registro
                 </Button>
             </View>
-            {screen === 'login' ? <LoginScreen onNavigate={setScreen} /> : <RegisterScreen onNavigate={setScreen} />}
+            {screen === 'login' ? <LoginScreen navigation={navigation} /> : <RegisterScreen navigation={navigation} />}
         </View>
     );
 };

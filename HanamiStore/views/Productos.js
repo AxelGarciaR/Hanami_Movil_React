@@ -5,7 +5,7 @@ import { Card, Title, Paragraph } from 'react-native-paper';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import ProductDetail from '../components/ProductDetail';
+import ProductDetail from './DetalleProducto';
 
 const ProductoCard = ({ product, navigation }) => (
   <TouchableOpacity onPress={() => navigation.navigate('ProductDetail', { product })}>
