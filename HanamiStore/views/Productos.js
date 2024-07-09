@@ -1,90 +1,89 @@
-// Productos.js
-import React from 'react';
-import { View, ScrollView, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
-import { Card, Title, Paragraph } from 'react-native-paper';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import ProductDetail from './DetalleProducto';
+import React, { useState } from 'react';
+import { View, FlatList, TouchableOpacity, StyleSheet, Image, Dimensions } from 'react-native';
+import { Card, Title, Paragraph, Text } from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
 
-const ProductoCard = ({ product, navigation }) => (
-  <TouchableOpacity onPress={() => navigation.navigate('ProductDetail', { product })}>
-    <Card style={styles.card}>
-      <Card.Cover source={{ uri: product.image }} />
-      <Card.Content>
-        <Title>{product.title}</Title>
-        <Paragraph>{product.price}</Paragraph>
-        <View style={styles.ratingContainer}>
-          <Text>{product.rating}</Text>
-          <Image source={require('../assets/cheque.png')} style={styles.starIcon} />
-        </View>
-      </Card.Content>
-    </Card>
-  </TouchableOpacity>
-);
+const productos = [
+  { id: '1', nombre: 'Esencia de planta té verde', descripcion: 'Descripción 1', precio: '$8.19', calificacion: 4.8, imagen: require('../assets/skincare.png') },
+  { id: '2', nombre: 'Esencia de planta té verde', descripcion: 'Descripción 2', precio: '$6.29', calificacion: 4.5, imagen: require('../assets/skincare.png') },
+  { id: '3', nombre: 'Esencia de planta té verde', descripcion: 'Descripción 3', precio: '$6.29', calificacion: 4.5, imagen: require('../assets/skincare.png') },
+  { id: '4', nombre: 'Esencia de planta té verde', descripcion: 'Descripción 4', precio: '$7.19', calificacion: 4.7, imagen: require('../assets/skincare.png') },
+  { id: '5', nombre: 'Esencia de planta té verde', descripcion: 'Descripción 5', precio: '$5.99', calificacion: 4.6, imagen: require('../assets/skincare.png') },
+];
 
-const Productos = ({ navigation }) => {
-  const products = [
-    {
-      title: 'Esencia de planta té verde',
-      price: '$8.19',
-      rating: '4.8',
-      image: 'https://via.placeholder.com/150',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec nec gravida nulla, nec iaculis lorem. Curabitur vestibulum.',
-    },
-    // ...otros productos
-  ];
+const Productos = () => {
+  const navigation = useNavigation();
+  const [numColumns, setNumColumns] = useState(2);
+  const windowWidth = Dimensions.get('window').width;
+
+  const renderItem = ({ item }) => (
+    <TouchableOpacity onPress={() => navigation.navigate('DetalleProducto', { productId: item.id })} style={styles.touchable}>
+      <Card style={styles.card}>
+        <Image source={item.imagen} style={styles.image} />
+        <Card.Content>
+          <Title style={styles.title}>{item.nombre}</Title>
+          <View style={styles.ratingContainer}>
+            <Text style={styles.rating}>{item.calificacion}</Text>
+            <Text style={styles.star}>★</Text>
+          </View>
+          <Paragraph style={styles.price}>{item.precio}</Paragraph>
+        </Card.Content>
+      </Card>
+    </TouchableOpacity>
+  );
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      {products.map((product, index) => (
-        <ProductoCard key={index} product={product} navigation={navigation} />
-      ))}
-    </ScrollView>
+    <View style={{ flex: 1, padding: 8 }}>
+      <FlatList
+        data={productos}
+        renderItem={renderItem}
+        keyExtractor={item => item.id}
+        numColumns={numColumns}
+        key={numColumns} // Esto forzará una nueva renderización cuando el número de columnas cambie
+      />
+    </View>
   );
 };
 
-const DrawerContent = (props) => (
-  <Drawer.Section title="Categorias">
-    <Drawer.Item label="Categoria 1" />
-    <Drawer.Item label="Categoria 2" />
-    <Drawer.Item label="Categoria 3" />
-    <Drawer.Item label="Categoria 4" />
-  </Drawer.Section>
-);
-
-const Drawer = createDrawerNavigator();
-const Stack = createStackNavigator();
-
-const App = () => {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Productos" component={Productos} />
-        <Stack.Screen name="ProductDetail" component={ProductDetail} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
-}
-
 const styles = StyleSheet.create({
-  container: {
-    padding: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
+  touchable: {
+    flex: 1,
+    margin: 8,
   },
   card: {
-    margin: 10,
-    width: '90%',
+    width: (Dimensions.get('window').width / 2) - 24, // Ajusta el ancho de las tarjetas para que ocupen la mitad del ancho de la pantalla
+    borderRadius: 16,
+    backgroundColor: 'white',
+    elevation: 4, // Para sombra en Android
+    overflow: 'hidden', // Asegúrate de que el contenido de la tarjeta no se desborde
+  },
+  image: {
+    height: 100,
+    width: '100%',
+    resizeMode: 'cover',
+  },
+  title: {
+    fontSize: 14,
+    marginTop: 8,
   },
   ratingContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginTop: 4,
   },
-  starIcon: {
-    width: 20,
-    height: 20,
-    marginLeft: 5,
+  rating: {
+    fontSize: 14,
+    color: 'black',
+  },
+  star: {
+    fontSize: 14,
+    color: '#FFD700', // Color dorado para la estrella
+    marginLeft: 4,
+  },
+  price: {
+    fontSize: 14,
+    color: 'black',
+    marginTop: 4,
   },
 });
 

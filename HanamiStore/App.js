@@ -17,9 +17,41 @@ import Carrito from './views/Carrito';
 import Productos from './views/Productos';
 import Perfil from './views/Perfil';
 import MisProductos from './views/MisProductos';
+import DetalleProducto from './views/DetalleProducto';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
+
+function DrawerNavigator() {
+  return (
+    <Drawer.Navigator initialRouteName="SkinCare">
+      <Drawer.Screen name="SkinCare" component={Productos} />
+      <Drawer.Screen name="Salud y Belleza" component={Productos} />
+      <Drawer.Screen name="Accesorios de Belleza" component={Productos} />
+      <Drawer.Screen name="Escencias" component={Productos} />
+    </Drawer.Navigator>
+  );
+}
+
+function RootNavigator() {
+  return (
+    <Stack.Navigator initialRouteName="Productos">
+      <Stack.Screen name="Inicio" component={Inicio} options={{ headerShown: false }} />
+      <Stack.Screen name="Cuenta" component={Cuenta} options={{ headerShown: false }} />
+      <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+      <Stack.Screen name="Registro" component={Registro} options={{ headerShown: false }} />
+      <Stack.Screen name="Recuperacion" component={Recuperacion} options={{ headerShown: false }} />
+      <Stack.Screen name="NuevaContra" component={NuevaContra} options={{ headerShown: false }} />
+      <Stack.Screen name="CodigoContra" component={CodigoContra} options={{ headerShown: false }} />
+      <Stack.Screen name="Dashboard" component={Dashboard} options={{ headerShown: false }} />
+      <Stack.Screen name="Carrito" component={Carrito} options={{ headerShown: false }} />
+      <Stack.Screen name="Productos" component={DrawerNavigator} options={{ headerShown: false }} />
+      <Stack.Screen name="MisProductos" component={MisProductos} options={{ headerShown: false }} />
+      <Stack.Screen name="Perfil" component={Perfil} options={{ headerShown: false }} />
+      <Stack.Screen name="DetalleProducto" component={DetalleProducto} options={{ headerShown: false }} />
+    </Stack.Navigator>
+  );
+}
 
 export default function App() {
   const theme = {
@@ -29,20 +61,7 @@ export default function App() {
   return (
     <PaperProvider theme={theme}>
       <NavigationContainer>
-              <Stack.Navigator initialRouteName="Carrito">
-                <Stack.Screen name="Inicio" component={Inicio} options={{ headerShown: false }} />
-                <Stack.Screen name="Cuenta" component={Cuenta} options={{ headerShown: false }} />
-                <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-                <Stack.Screen name="Registro" component={Registro} options={{ headerShown: false }} />
-                <Stack.Screen name="Recuperacion" component={Recuperacion} options={{ headerShown: false }} />
-                <Stack.Screen name="NuevaContra" component={NuevaContra} options={{ headerShown: false }} />
-                <Stack.Screen name="CodigoContra" component={CodigoContra} options={{ headerShown: false }} />
-                <Stack.Screen name="Dashboard" component={Dashboard} options={{ headerShown: false }} />
-                <Stack.Screen name="Carrito" component={Carrito} options={{ headerShown: false }} />
-                <Stack.Screen name="Productos" component={Productos} options={{ headerShown: false }} />
-                <Stack.Screen name="MisProductos" component={MisProductos} options={{ headerShown: false }} />
-                <Stack.Screen name="Perfil" component={Perfil} options={{ headerShown: false }} />
-              </Stack.Navigator>
+        <RootNavigator />
       </NavigationContainer>
     </PaperProvider>
   );
