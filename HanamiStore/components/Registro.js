@@ -15,7 +15,7 @@ const RegisterScreen = ({ navigation }) => {
     const showDialog = () => setRegistroExitoso(true);
     const hideDialog = () => {
         setRegistroExitoso(false);
-        navigation.navigate('Cuenta'); // Redirige al login
+        navigation.navigate('login'); // Redirige al login
     };
 
     return (
