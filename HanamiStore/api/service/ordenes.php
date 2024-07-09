@@ -1,6 +1,6 @@
 <?php
 // Se incluye la clase de entrada
-require_once('../../models/data/ordenes_data.php');
+require_once('../model/data/ordenes_data.php');
 
 // Se comprueba si existe una acción a realizar, de lo contrario se finaliza el script con un mensaje de error.
 if (isset($_GET['action'])) {
