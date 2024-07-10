@@ -17,12 +17,22 @@ const fetchData = async (filename, action, form = null) => {
         if (!RESPONSE.ok) {
             throw new Error(`HTTP error! status: ${RESPONSE.status}`);
         }
-        return await RESPONSE.json();
+
+        const contentType = RESPONSE.headers.get('content-type');
+        const text = await RESPONSE.text();
+
+        console.log('Response content-type:', contentType);
+        console.log('Response text:', text);
+
+        if (contentType && contentType.includes('application/json')) {
+            return JSON.parse(text);
+        } else {
+            throw new Error('Expected JSON, but received: ' + contentType);
+        }
     } catch (error) {
         console.error('Fetch error:', error);
         return { error: true, message: error.message };
     }
 };
-
 
 export default fetchData;

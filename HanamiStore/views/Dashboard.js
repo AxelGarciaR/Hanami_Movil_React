@@ -11,6 +11,22 @@ const Dashboard = () => {
   const [refreshing, setRefreshing] = useState(false);
 
 
+  const cerrarSesion = async () => {
+    try {
+      const DATA = await fetchData("cliente", "logOut");
+
+      if (DATA.status) {
+        console.log("Sesión Finalizada");
+        navigation.replace("Cuenta");
+      } else {
+        console.log("No se pudo eliminar la sesión");
+      }
+    } catch (error) {
+      console.error(error, "Error desde Catch");
+      Alert.alert("Error", "Ocurrió un error al iniciar sesión con bryancito");
+    }
+  };
+
   const getNewProducts = async () => {
     try {
       const DATA = await fetchData("productos", "newProduct");
@@ -47,11 +63,15 @@ const Dashboard = () => {
         left={<TextInput.Icon name="card-search-outline" />}
         style={styles.searchInput}
       />
-
+      <Button mode="contained" onPress={cerrarSesion} style={styles.logoutButton}>
+        Cerrar Sesión
+      </Button>
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Productos mas recientes</Text>
         <Text style={styles.seeAll}>See all</Text>
       </View>
+
+
 
       <View style={styles.productContainer}>
 
@@ -87,7 +107,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFF',
     paddingHorizontal: 20,
-    marginTop: 40, 
+    marginTop: 40,
   },
   header: {
     marginTop: 20,

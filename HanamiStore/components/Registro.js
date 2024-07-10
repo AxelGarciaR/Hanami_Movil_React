@@ -9,6 +9,7 @@ const RegisterScreen = ({ navigation }) => {
     const [apellidos, setApellidos] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [direccion, setDireccion] = useState('');
     const [nombrePerfil, setNombrePerfil] = useState('');
     const [registroExitoso, setRegistroExitoso] = useState(false);
@@ -22,16 +23,25 @@ const RegisterScreen = ({ navigation }) => {
     const handlerRegistro = async () => {
         try {
             const form = new FormData();
-            form.append("nombre_cliente", nombres);
-            form.append("apellido_cliente", apellidos);
-            form.append("nombre_perfil", nombrePerfil);
-            form.append("clave", password);
-            form.append("CorreoE", email);
-            form.append("Direccion", direccion);
+            form.append("nombreCliente", nombres);
+            form.append("apellidoCliente", apellidos);
+            form.append("perfilCliente", nombrePerfil);
+            form.append("claveCliente", password);
+            form.append("confirmarClave", confirmPassword);
+            form.append("correoCliente", email);
+            form.append("direccionCliente", direccion);
 
             const DATA = await fetchData("cliente", "signUp", form);
             if (DATA.status) {
 
+                setNombres("");
+                setApellidos("");
+                setEmail("");
+                setPassword("");
+                setConfirmPassword("");
+                setDireccion("");
+                setNombrePerfil("");
+                
                 showDialog();
 
             } else {
@@ -74,6 +84,13 @@ const RegisterScreen = ({ navigation }) => {
                     style={styles.input}
                 />
                 <TextInput
+                    placeholder='Confirmar Clave'
+                    value={confirmPassword}
+                    onChangeText={setConfirmPassword}
+                    secureTextEntry
+                    style={styles.input}
+                />
+                <TextInput
                     placeholder='Dirección'
                     value={direccion}
                     onChangeText={setDireccion}
@@ -87,7 +104,7 @@ const RegisterScreen = ({ navigation }) => {
                 />
                 <ButtonAction
                     mode="contained"
-                    onPress={showDialog}
+                    onPress={handlerRegistro}
                     style={styles.actionButton}
                 >
                     Crear
@@ -107,7 +124,7 @@ const RegisterScreen = ({ navigation }) => {
                             source={require('../assets/cheque.png')}
                             style={styles.dialogImage}
                         />
-                        <Text style={styles.dialogText}>¡Registro exitoso!</Text>
+                        <Text style={styles.dialogText}>¡Registro exitoso!, ahora regrese al inicio de sesion</Text>
                     </View>
                 </Dialog>
             </Portal>

@@ -49,7 +49,7 @@ const LoginScreen = ({ navigation }) => {
             } else {
                 // Muestra una alerta en caso de error
                 console.log(DATA);
-                Alert.alert("Error sesión", DATA.error);
+                //Alert.alert("Error sesión", DATA.error);
             }
         } catch (error) {
             // Maneja errores que puedan ocurrir durante la solicitud
@@ -79,7 +79,7 @@ const LoginScreen = ({ navigation }) => {
                     style={styles.input}
                 />
 
-                <TouchableOpacity style={styles.actionButton} onPress={() => navigation.navigate('Dashboard')}>
+                <TouchableOpacity style={styles.actionButton} onPress={handlerLogin}>
                     <Text style={styles.LoginText}>Login</Text>
                 </TouchableOpacity>
 

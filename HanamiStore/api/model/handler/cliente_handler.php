@@ -24,11 +24,12 @@ class ClienteHandler
     public function checkUser($mail, $password)
     {
         $sql = 'SELECT id_cliente, CorreoE, clave, estado
-                FROM clientes
-                WHERE CorreoE = ?';
+            FROM clientes
+            WHERE CorreoE = ?';
         $params = array($mail);
         $data = Database::getRow($sql, $params);
-        if (password_verify($password, $data['clave'])) {
+
+        if ($data && password_verify($password, $data['clave'])) {
             $this->idCliente = $data['id_cliente'];
             $this->correoE = $data['CorreoE'];
             $this->estado = $data['estado'];
@@ -37,6 +38,7 @@ class ClienteHandler
             return false;
         }
     }
+
 
     public function checkStatus()
     {
