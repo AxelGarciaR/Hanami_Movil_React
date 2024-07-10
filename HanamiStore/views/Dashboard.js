@@ -3,6 +3,7 @@ import { View, ScrollView, StyleSheet, Image, Text, Alert } from 'react-native';
 import { TextInput, Card, Title, Paragraph, Button } from 'react-native-paper';
 import ButtonAction from '../components/ButtonAction'; // Asegúrate de ajustar la ruta si es necesario
 import fetchData from "../utils/fechdata";
+import ProductoCard from '../components/ProductoCard';
 
 const Dashboard = () => {
 
@@ -64,6 +65,16 @@ const Dashboard = () => {
             <ButtonAction label="+" />
           </Card.Actions>
         </Card>
+        <Card style={styles.productCard}>
+          <Card.Cover style={styles.cardImage} source={require('../assets/skincare.png')} />
+          <Card.Content style={styles.cardContent}>
+            <Paragraph style={styles.cardText}>Loción hidratante</Paragraph>
+            <Text style={styles.price}>$10</Text>
+          </Card.Content>
+          <Card.Actions style={styles.cardActions}>
+            <ButtonAction label="+" />
+          </Card.Actions>
+        </Card>
 
 
       </View>
@@ -76,6 +87,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFF',
     paddingHorizontal: 20,
+    marginTop: 40, 
   },
   header: {
     marginTop: 20,

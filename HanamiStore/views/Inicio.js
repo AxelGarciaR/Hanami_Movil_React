@@ -31,13 +31,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         padding: 50,
+        paddingTop: 50,
         backgroundColor: '#FFC8DD',
     },
     image: {
         width: '75%',
         height: 200,
         marginBottom: 20,
-        marginTop: -80,
+        marginTop: -90,
     },
     text: {
         fontSize: 60,
