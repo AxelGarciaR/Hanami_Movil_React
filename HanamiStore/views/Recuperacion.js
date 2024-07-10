@@ -1,9 +1,20 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, TextInput, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, TextInput, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import ButtonAction from '../components/ButtonAction';
 
 const Recuperacion = ({ navigation }) => {
     const [email, setEmail] = useState('');
+
+    const handleSendCode = () => {
+        const emailRegex = /\S+@\S+\.\S+/;
+        if (!emailRegex.test(email)) {
+            Alert.alert('Error', 'Ingresa un correo válido');
+            return;
+        }
+        // Aquí puedes enviar el código de recuperación por correo
+        // y luego navegar a la pantalla adecuada
+        navigation.navigate('CodigoContra');
+    };
 
     return (
         <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -32,11 +43,7 @@ const Recuperacion = ({ navigation }) => {
                     />
                     <ButtonAction
                         mode="contained"
-                        onPress={() => {
-                            // Aquí puedes enviar el código de recuperación por correo
-                            // y luego navegar a la pantalla adecuada
-                            navigation.navigate('CodigoContra');
-                        }}
+                        onPress={handleSendCode}
                         style={styles.actionButton}
                     >
                         Enviar código
@@ -78,7 +85,7 @@ const styles = StyleSheet.create({
     textdos: {
         marginTop: 20,
         alignSelf: 'flex-start',
-        marginLeft: 50,
+        marginLeft: 5,
         fontSize: 16,
     },
     input: {

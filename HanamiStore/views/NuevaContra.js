@@ -8,6 +8,7 @@ const NuevaContra = ({ navigation }) => {
     const [newPass, setNewPass] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [cambiodeContraExitoso, setCambioDeContraExitoso] = useState(false);
+    const [passwordsMismatch, setPasswordsMismatch] = useState(false);
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -15,7 +16,17 @@ const NuevaContra = ({ navigation }) => {
 
     const hideDialog = () => {
         setCambioDeContraExitoso(false);
+        setPasswordsMismatch(false);
         navigation.navigate('Cuenta');
+    };
+
+    const handlePasswordReset = () => {
+        if (pass !== newPass) {
+            setPasswordsMismatch(true);
+        } else {
+            // Lógica para restablecer la contraseña
+            setCambioDeContraExitoso(true);
+        }
     };
 
     return (
@@ -31,7 +42,7 @@ const NuevaContra = ({ navigation }) => {
                 </Text>
                 <View style={styles.whiteContainer}>
                     <Image
-                        source={require('../assets/logotreshanami.png')} // Ruta de tu imagen
+                        source={require('../assets/logotreshanami.png')}
                         style={styles.imagedos}
                     />
                     <View style={styles.inputContainer}>
@@ -64,10 +75,7 @@ const NuevaContra = ({ navigation }) => {
                     </View>
                     <ButtonAction
                         mode="contained"
-                        onPress={() => {
-                            // Lógica para restablecer la contraseña
-                            setCambioDeContraExitoso(true);
-                        }}
+                        onPress={handlePasswordReset}
                         style={styles.actionButton}
                     >
                         Restablecer contraseña
@@ -80,6 +88,11 @@ const NuevaContra = ({ navigation }) => {
                                     style={styles.dialogImage}
                                 />
                                 <Text style={styles.dialogText}>¡Cambio de contraseña exitoso!</Text>
+                            </View>
+                        </Dialog>
+                        <Dialog visible={passwordsMismatch} onDismiss={hideDialog}>
+                            <View style={styles.dialogContent}>
+                                <Text style={styles.dialogText}>Las contraseñas no coinciden</Text>
                             </View>
                         </Dialog>
                     </Portal>
