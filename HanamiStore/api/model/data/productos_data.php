@@ -1,8 +1,8 @@
 <?php
 // Se incluye la clase para validar los datos de entrada.
-require_once('../../helpers/validator.php');
+require_once('../helpers/validator.php');
 // Se incluye la clase padre.
-require_once('../handler/productos_handler.php');
+require_once('../model/handler/productos_handler.php');
 
 class ProductosData extends ProductosHandler
 {
