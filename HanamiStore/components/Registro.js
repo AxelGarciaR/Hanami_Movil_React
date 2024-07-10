@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { View, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, TextInput, TouchableOpacity, StyleSheet, Image, Alert } from 'react-native';
 import { Button, Text, Dialog, Portal } from 'react-native-paper';
 import ButtonAction from './ButtonAction';
+import fetchData from "../utils/fechdata";
 
 const RegisterScreen = ({ navigation }) => {
     const [nombres, setNombres] = useState('');
@@ -15,13 +16,39 @@ const RegisterScreen = ({ navigation }) => {
     const showDialog = () => setRegistroExitoso(true);
     const hideDialog = () => {
         setRegistroExitoso(false);
-        navigation.navigate('login'); // Redirige al login
+        navigation.navigate('Cuenta'); // Redirige al login
+    };
+
+    const handlerRegistro = async () => {
+        try {
+            const form = new FormData();
+            form.append("nombre_cliente", nombres);
+            form.append("apellido_cliente", apellidos);
+            form.append("nombre_perfil", nombrePerfil);
+            form.append("clave", password);
+            form.append("CorreoE", email);
+            form.append("Direccion", direccion);
+
+            const DATA = await fetchData("cliente", "signUp", form);
+            if (DATA.status) {
+
+                showDialog();
+
+            } else {
+                console.log(DATA.error);
+                Alert.alert("Error", DATA.error);
+                return;
+            }
+        } catch (error) {
+            console.error(error);
+            Alert.alert("Error", "Ocurrió un error al registrar la cuenta");
+        }
     };
 
     return (
         <View style={styles.contentContainer}>
             <View style={styles.formContainer}>
-                <TextInput  
+                <TextInput
                     placeholder='Nombres'
                     value={nombres}
                     onChangeText={setNombres}
@@ -65,22 +92,26 @@ const RegisterScreen = ({ navigation }) => {
                 >
                     Crear
                 </ButtonAction>
-                <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+
+                <TouchableOpacity onPress={() => navigation.navigate('Cuenta')}>
                     <Text style={styles.linkText}>¿Ya tienes cuenta? Login</Text>
                 </TouchableOpacity>
 
-                <Portal>
-                    <Dialog visible={registroExitoso} onDismiss={hideDialog}>
-                        <View style={styles.dialogContent}>
-                            <Image
-                                source={require('../assets/cheque.png')}
-                                style={styles.dialogImage}
-                            />
-                            <Text style={styles.dialogText}>¡Registro exitoso!</Text>
-                        </View>
-                    </Dialog>
-                </Portal>
+
             </View>
+
+            <Portal>
+                <Dialog visible={registroExitoso} onDismiss={hideDialog}>
+                    <View style={styles.dialogContent}>
+                        <Image
+                            source={require('../assets/cheque.png')}
+                            style={styles.dialogImage}
+                        />
+                        <Text style={styles.dialogText}>¡Registro exitoso!</Text>
+                    </View>
+                </Dialog>
+            </Portal>
+
         </View>
     );
 };

@@ -3,8 +3,20 @@ import { View, Text, StyleSheet } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { Card, Button, Paragraph, Dialog, Portal, Provider } from 'react-native-paper';
 import ButtonAction from '../components/ButtonAction';
+import fetchData from "../utils/fechdata";
 
 const DetalleProducto = () => {
+
+  //Constantes de js para la api
+  const { idProducto } = route.params;
+  const [descripcion, setDescripcion] = useState("");
+  const [nombre, setNombre] = useState("");
+  const [precio, setPrecio] = useState("");
+  const [imagen, setImagen] = useState("");
+  const [cantidad, setCantidad] = useState("");
+  const navigation = useNavigation();
+  ////////////////////////////////////
+  
   const route = useRoute();
   const { productId } = route.params;
 
@@ -33,6 +45,30 @@ const DetalleProducto = () => {
   const hideDialog = () => {
     setDialogVisible(false);
   };
+
+  //Peticion para la api
+  const getData = async () => {
+    try {
+      const form = new FormData();
+      form.append("idProducto", idProducto);
+      const DATA = await fetchData("producto", "readOne", form);
+      if (DATA.status) {
+        const producto = DATA.dataset;
+        setDescripcion(producto.producto_descripcion);
+        setNombre(producto.producto_nombre);
+        setPrecio(producto.producto_precio);
+        setImagen(producto.producto_imagen);
+        setCantidad(producto.producto_cantidad);
+      } else {
+        console.log("Data en el ELSE error productos", DATA);
+        Alert.alert("Error productos", DATA.error);
+      }
+    } catch (error) {
+      console.error(error, "Error desde Catch");
+      Alert.alert("Error", "Ocurrió un error al listar los productos");
+    }
+  };
+
 
   return (
     <Provider>

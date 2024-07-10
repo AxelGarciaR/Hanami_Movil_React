@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, FlatList, TouchableOpacity, StyleSheet, Image, Dimensions } from 'react-native';
 import { Card, Title, Paragraph, Text } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
+import fetchData from "../utils/fechdata";
 
 const productos = [
   { id: '1', nombre: 'Esencia de planta té verde', descripcion: 'Descripción 1', precio: '$8.19', calificacion: 4.8, imagen: require('../assets/skincare.png') },
@@ -12,10 +13,39 @@ const productos = [
 ];
 
 const Productos = () => {
+
+  //Constantes de js para la api
+  const [dataProductos, setDataProductos] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
+
+  //Peticion para la api
+  const getProductos = async () => {
+    try {
+      const DATA = await fetchData("productos", "readAll");
+      if (DATA.status) {
+        setDataProductos(DATA.dataset);
+      } else {
+        console.log("Error al seleccionar productos", DATA);
+        Alert.alert('Error productos', DATA.error);
+      }
+    } catch (error) {
+      console.error(error, "Error desde Catch");
+      Alert.alert('Error', 'Ocurrió un error al listar los productos');
+    }
+  }
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    // Simulando una recarga de datos
+    setTimeout(() => {
+      getProductos();
+      setRefreshing(false);
+    }, 200); // Tiempo de espera para la recarga
+  };
+
   const navigation = useNavigation();
   const [numColumns, setNumColumns] = useState(2);
   const windowWidth = Dimensions.get('window').width;
-
   const renderItem = ({ item }) => (
     <TouchableOpacity onPress={() => navigation.navigate('DetalleProducto', { productId: item.id })} style={styles.touchable}>
       <Card style={styles.card}>

@@ -1,9 +1,40 @@
-import React from 'react';
-import { View, ScrollView, StyleSheet, Image, Text } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, ScrollView, StyleSheet, Image, Text, Alert } from 'react-native';
 import { TextInput, Card, Title, Paragraph, Button } from 'react-native-paper';
 import ButtonAction from '../components/ButtonAction'; // Asegúrate de ajustar la ruta si es necesario
+import fetchData from "../utils/fechdata";
 
 const Dashboard = () => {
+
+  const [dataNewProducts, setDataNewProducts] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
+
+
+  const getNewProducts = async () => {
+    try {
+      const DATA = await fetchData("productos", "newProduct");
+      if (DATA.status) {
+        setDataNewProducts(DATA.dataset);
+      } else {
+        console.log("Data en el ELSE error productos", DATA);
+        Alert.alert("Error productos", DATA.error);
+      }
+    } catch (error) {
+      console.error(error, "Error desde Catch");
+      Alert.alert("Error", "Ocurrió un error al listar los productos");
+    }
+  };
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    // Simulando una recarga de datos
+    setTimeout(() => {
+      getNewProducts();
+      setRefreshing(false);
+    }, 200); // Tiempo de espera para la recarga
+  };
+
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
@@ -15,15 +46,17 @@ const Dashboard = () => {
         left={<TextInput.Icon name="card-search-outline" />}
         style={styles.searchInput}
       />
+
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Productos populares</Text>
+        <Text style={styles.sectionTitle}>Productos mas recientes</Text>
         <Text style={styles.seeAll}>See all</Text>
       </View>
+
       <View style={styles.productContainer}>
+
         <Card style={styles.productCard}>
           <Card.Cover style={styles.cardImage} source={require('../assets/skincare.png')} />
           <Card.Content style={styles.cardContent}>
-            <Title style={styles.cardTitle}>BEST SELLER</Title>
             <Paragraph style={styles.cardText}>Loción hidratante</Paragraph>
             <Text style={styles.price}>$10</Text>
           </Card.Content>
@@ -31,28 +64,8 @@ const Dashboard = () => {
             <ButtonAction label="+" />
           </Card.Actions>
         </Card>
-        <Card style={styles.productCard}>
-          <Card.Cover style={styles.cardImage} source={require('../assets/skincare.png')} />
-          <Card.Content style={styles.cardContent}>
-            <Title style={styles.cardTitle}>BEST SELLER</Title>
-            <Paragraph style={styles.cardText}>Crema de manos</Paragraph>
-            <Text style={styles.price}>$9.99</Text>
-          </Card.Content>
-          <Card.Actions style={styles.cardActions}>
-            <ButtonAction label="+" />
-          </Card.Actions>
-        </Card>
-        <Card style={styles.productCard}>
-          <Card.Cover style={styles.cardImage} source={require('../assets/skincare.png')} />
-          <Card.Content style={styles.cardContent}>
-            <Title style={styles.cardTitle}>NUEVO PRODUCTO</Title>
-            <Paragraph style={styles.cardText}>Loción hidratante</Paragraph>
-            <Text style={styles.price}>$5.69</Text>
-          </Card.Content>
-          <Card.Actions style={styles.cardActions}>
-            <ButtonAction label="+" />
-          </Card.Actions>
-        </Card>
+
+
       </View>
     </ScrollView>
   );
@@ -113,9 +126,6 @@ const styles = StyleSheet.create({
   },
   cardContent: {
     alignItems: 'center', // Centra el contenido de la tarjeta
-  },
-  cardTitle: {
-    textAlign: 'center',
   },
   cardText: {
     textAlign: 'center',
