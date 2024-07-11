@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, TextInput, ScrollView, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, StyleSheet, Image, TextInput, ScrollView } from 'react-native';
+import { IconButton, Portal, Dialog } from 'react-native-paper';
 import ButtonAction from '../components/ButtonAction';
+import CustomAlert from 'react-native-dialog';
 
 const Recuperacion = ({ navigation }) => {
     const [email, setEmail] = useState('');
+    const [showAlert, setShowAlert] = useState(false);
 
     const handleSendCode = () => {
         const emailRegex = /\S+@\S+\.\S+/;
         if (!emailRegex.test(email)) {
-            Alert.alert('Error', 'Ingresa un correo válido');
+            setShowAlert(true);
             return;
         }
         // Aquí puedes enviar el código de recuperación por correo
@@ -48,11 +51,23 @@ const Recuperacion = ({ navigation }) => {
                     >
                         Enviar código
                     </ButtonAction>
-                    <TouchableOpacity onPress={() => navigation.navigate('Cuenta')}>
-                        <Text style={styles.linkText}>Regresar al inicio de sesión</Text>
-                    </TouchableOpacity>
                 </View>
             </View>
+
+            <Portal>
+                <Dialog visible={showAlert} onDismiss={() => setShowAlert(false)}>
+                    <View style={styles.dialogContent}>
+                        <Image
+                            source={require('../assets/cancelar.png')}
+                            style={styles.dialogImage}
+                        />
+                        <Text style={styles.dialogText}>Ingresa un correo válido</Text>
+                        <ButtonAction onPress={() => setShowAlert(false)} style={styles.dialogButton}>
+                            OK
+                        </ButtonAction>
+                    </View>
+                </Dialog>
+            </Portal>
         </ScrollView>
     );
 };
@@ -85,7 +100,7 @@ const styles = StyleSheet.create({
     textdos: {
         marginTop: 20,
         alignSelf: 'flex-start',
-        marginLeft: 5,
+        marginLeft: 50,
         fontSize: 16,
     },
     input: {
@@ -107,10 +122,23 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 20,
         marginTop: 10,
     },
-    linkText: {
-        marginTop: 30,
-    },
     actionButton: {
+        marginTop: 20,
+    },
+    dialogContent: {
+        alignItems: 'center',
+        padding: 20,
+    },
+    dialogImage: {
+        width: 100,
+        height: 100,
+        marginBottom: 10,
+    },
+    dialogText: {
+        fontSize: 18,
+        textAlign: 'center',
+    },
+    dialogButton: {
         marginTop: 20,
     },
 });

@@ -9,6 +9,7 @@ const NuevaContra = ({ navigation }) => {
     const [showPassword, setShowPassword] = useState(false);
     const [cambiodeContraExitoso, setCambioDeContraExitoso] = useState(false);
     const [passwordsMismatch, setPasswordsMismatch] = useState(false);
+    const [emptyFields, setEmptyFields] = useState(false);
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -17,16 +18,23 @@ const NuevaContra = ({ navigation }) => {
     const hideDialog = () => {
         setCambioDeContraExitoso(false);
         setPasswordsMismatch(false);
-        navigation.navigate('Cuenta');
+        setEmptyFields(false);
     };
 
     const handlePasswordReset = () => {
-        if (pass !== newPass) {
+        if (!pass || !newPass) {
+            setEmptyFields(true);
+        } else if (pass !== newPass) {
             setPasswordsMismatch(true);
         } else {
             // Lógica para restablecer la contraseña
             setCambioDeContraExitoso(true);
         }
+    };
+
+    const handleSuccessDialogDismiss = () => {
+        setCambioDeContraExitoso(false);
+        navigation.navigate('Cuenta');
     };
 
     return (
@@ -81,7 +89,7 @@ const NuevaContra = ({ navigation }) => {
                         Restablecer contraseña
                     </ButtonAction>
                     <Portal>
-                        <Dialog visible={cambiodeContraExitoso} onDismiss={hideDialog}>
+                        <Dialog visible={cambiodeContraExitoso} onDismiss={handleSuccessDialogDismiss}>
                             <View style={styles.dialogContent}>
                                 <Image
                                     source={require('../assets/cheque.png')}
@@ -93,6 +101,11 @@ const NuevaContra = ({ navigation }) => {
                         <Dialog visible={passwordsMismatch} onDismiss={hideDialog}>
                             <View style={styles.dialogContent}>
                                 <Text style={styles.dialogText}>Las contraseñas no coinciden</Text>
+                            </View>
+                        </Dialog>
+                        <Dialog visible={emptyFields} onDismiss={hideDialog}>
+                            <View style={styles.dialogContent}>
+                                <Text style={styles.dialogText}>No dejes campos vacíos</Text>
                             </View>
                         </Dialog>
                     </Portal>
