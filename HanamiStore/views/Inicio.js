@@ -11,7 +11,7 @@ const Inicio = ({ navigation }) => {
                 resizeMode="cover"a
             />
             <Text style={styles.text}>
-                HANAMI{'\n'}Beauty and care
+                HANAMI{'\n'}Beauty and Care
             </Text>
             <Image
                 source={require('../assets/skincare.png')}
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
         width: '75%',
         height: 200,
         marginBottom: 20,
-        marginTop: -90,
+        marginTop: -50,
     },
     text: {
         fontSize: 60,

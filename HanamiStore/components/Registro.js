@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, TouchableOpacity, StyleSheet, Image, Alert } from 'react-native';
+import { View, TextInput, TouchableOpacity, StyleSheet, Image, Alert, ScrollView } from 'react-native';
 import { Button, Text, Dialog, Portal } from 'react-native-paper';
 import ButtonAction from './ButtonAction';
 import fetchData from "../utils/fechdata";
@@ -62,63 +62,65 @@ const RegisterScreen = ({ navigation }) => {
 
     return (
         <View style={styles.contentContainer}>
-            <View style={styles.formContainer}>
-                <TextInput
-                    placeholder='Nombres'
-                    value={nombres}
-                    onChangeText={(text) => handleChangeText(text, setNombres, /^[A-Za-z\s]*$/, 20)}
-                    style={styles.input}
-                />
-                <TextInput
-                    placeholder='Apellidos'
-                    value={apellidos}
-                    onChangeText={(text) => handleChangeText(text, setApellidos, /^[A-Za-z\s]*$/, 20)}
-                    style={styles.input}
-                />
-                <TextInput
-                    placeholder='Correo electrónico'
-                    value={email}
-                    onChangeText={(text) => handleChangeText(text, setEmail, /^.{0,50}$/, 50)}
-                    style={styles.input}
-                />
-                <TextInput
-                    placeholder='Clave'
-                    value={password}
-                    onChangeText={(text) => handleChangeText(text, setPassword, /^.{0,30}$/, 30)}
-                    secureTextEntry
-                    style={styles.input}
-                />
-                <TextInput
-                    placeholder='Confirmar Clave'
-                    value={confirmPassword}
-                    onChangeText={(text) => handleChangeText(text, setConfirmPassword, /^.{0,30}$/, 30)}
-                    secureTextEntry
-                    style={styles.input}
-                />
-                <TextInput
-                    placeholder='Dirección'
-                    value={direccion}
-                    onChangeText={(text) => handleChangeText(text, setDireccion, /^.{0,50}$/, 50)}
-                    style={styles.input}
-                />
-                <TextInput
-                    placeholder='Nombre de perfil'
-                    value={nombrePerfil}
-                    onChangeText={(text) => handleChangeText(text, setNombrePerfil, /^.{0,20}$/, 20)}
-                    style={styles.input}
-                />
-                <ButtonAction
-                    mode="contained"
-                    onPress={handlerRegistro}
-                    style={styles.actionButton}
-                >
-                    Crear
-                </ButtonAction>
+            <ScrollView contentContainerStyle={styles.scrollContainer}>
+                <View style={styles.formContainer}>
+                    <TextInput
+                        placeholder='Nombres'
+                        value={nombres}
+                        onChangeText={(text) => handleChangeText(text, setNombres, /^[A-Za-z\s]*$/, 20)}
+                        style={styles.input}
+                    />
+                    <TextInput
+                        placeholder='Apellidos'
+                        value={apellidos}
+                        onChangeText={(text) => handleChangeText(text, setApellidos, /^[A-Za-z\s]*$/, 20)}
+                        style={styles.input}
+                    />
+                    <TextInput
+                        placeholder='Correo electrónico'
+                        value={email}
+                        onChangeText={(text) => handleChangeText(text, setEmail, /^.{0,50}$/, 50)}
+                        style={styles.input}
+                    />
+                    <TextInput
+                        placeholder='Clave'
+                        value={password}
+                        onChangeText={(text) => handleChangeText(text, setPassword, /^.{0,30}$/, 30)}
+                        secureTextEntry
+                        style={styles.input}
+                    />
+                    <TextInput
+                        placeholder='Confirmar Clave'
+                        value={confirmPassword}
+                        onChangeText={(text) => handleChangeText(text, setConfirmPassword, /^.{0,30}$/, 30)}
+                        secureTextEntry
+                        style={styles.input}
+                    />
+                    <TextInput
+                        placeholder='Dirección'
+                        value={direccion}
+                        onChangeText={(text) => handleChangeText(text, setDireccion, /^.{0,50}$/, 50)}
+                        style={styles.input}
+                    />
+                    <TextInput
+                        placeholder='Nombre de perfil'
+                        value={nombrePerfil}
+                        onChangeText={(text) => handleChangeText(text, setNombrePerfil, /^.{0,20}$/, 20)}
+                        style={styles.input}
+                    />
+                    <ButtonAction
+                        mode="contained"
+                        onPress={handlerRegistro}
+                        style={styles.actionButton}
+                    >
+                        Crear
+                    </ButtonAction>
 
-                <TouchableOpacity onPress={() => navigation.navigate('Cuenta')}>
-                    <Text style={styles.linkText}>¿Ya tienes cuenta? Login</Text>
-                </TouchableOpacity>
-            </View>
+                    <TouchableOpacity onPress={() => navigation.navigate('Cuenta')}>
+                        <Text style={styles.linkText}>¿Ya tienes cuenta? Login</Text>
+                    </TouchableOpacity>
+                </View>
+            </ScrollView>
 
             <Portal>
                 <Dialog visible={registroExitoso} onDismiss={hideDialog}>
@@ -127,7 +129,7 @@ const RegisterScreen = ({ navigation }) => {
                             source={require('../assets/cheque.png')}
                             style={styles.dialogImage}
                         />
-                        <Text style={styles.dialogText}>¡Registro exitoso!, ahora regrese al inicio de sesion</Text>
+                        <Text style={styles.dialogText}>¡Registro exitoso! Ahora regrese al inicio de sesión</Text>
                     </View>
                 </Dialog>
             </Portal>
@@ -136,6 +138,12 @@ const RegisterScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+    scrollContainer: {
+        flexGrow: 4,
+        backgroundColor: 'white',
+        paddingHorizontal: 20,
+        paddingBottom: 40,
+    },
     formContainer: {
         width: '100%',
         paddingHorizontal: 20,
@@ -154,7 +162,8 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
         paddingTop: 20,
-        paddingHorizontal: 20,
+        paddingHorizontal: 10,
+        paddingBottom: 10,
         marginTop: -20, // Ajuste para superponer sobre el contenedor principal
     },
     actionButton: {

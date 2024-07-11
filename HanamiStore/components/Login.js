@@ -86,11 +86,7 @@ const LoginScreen = ({ navigation }) => {
                 />
 
                 <TouchableOpacity style={styles.actionButton} onPress={handlerLogin}>
-                    <Text style={styles.LoginText}>Login</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity>
-                    <Text style={styles.linkText}>¿No tienes cuenta? Regístrate</Text>
+                    <Text style={styles.LoginText}>Iniciar sesión</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity onPress={() => navigation.navigate('Recuperacion')}>
