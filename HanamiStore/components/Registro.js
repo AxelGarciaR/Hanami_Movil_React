@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, TextInput, TouchableOpacity, StyleSheet, Image, Alert } from 'react-native';
 import { Button, Text, Dialog, Portal } from 'react-native-paper';
 import ButtonAction from './ButtonAction';
@@ -20,6 +20,12 @@ const RegisterScreen = ({ navigation }) => {
         navigation.navigate('Cuenta'); // Redirige al login
     };
 
+    const handleChangeText = (text, setter, regex, maxLength) => {
+        if (regex.test(text) && text.length <= maxLength) {
+            setter(text);
+        }
+    };
+
     const handlerRegistro = async () => {
         try {
             const form = new FormData();
@@ -33,7 +39,6 @@ const RegisterScreen = ({ navigation }) => {
 
             const DATA = await fetchData("cliente", "signUp", form);
             if (DATA.status) {
-
                 setNombres("");
                 setApellidos("");
                 setEmail("");
@@ -61,45 +66,45 @@ const RegisterScreen = ({ navigation }) => {
                 <TextInput
                     placeholder='Nombres'
                     value={nombres}
-                    onChangeText={setNombres}
+                    onChangeText={(text) => handleChangeText(text, setNombres, /^[A-Za-z\s]*$/, 20)}
                     style={styles.input}
                 />
                 <TextInput
                     placeholder='Apellidos'
                     value={apellidos}
-                    onChangeText={setApellidos}
+                    onChangeText={(text) => handleChangeText(text, setApellidos, /^[A-Za-z\s]*$/, 20)}
                     style={styles.input}
                 />
                 <TextInput
                     placeholder='Correo electrónico'
                     value={email}
-                    onChangeText={setEmail}
+                    onChangeText={(text) => handleChangeText(text, setEmail, /^.{0,50}$/, 50)}
                     style={styles.input}
                 />
                 <TextInput
                     placeholder='Clave'
                     value={password}
-                    onChangeText={setPassword}
+                    onChangeText={(text) => handleChangeText(text, setPassword, /^.{0,30}$/, 30)}
                     secureTextEntry
                     style={styles.input}
                 />
                 <TextInput
                     placeholder='Confirmar Clave'
                     value={confirmPassword}
-                    onChangeText={setConfirmPassword}
+                    onChangeText={(text) => handleChangeText(text, setConfirmPassword, /^.{0,30}$/, 30)}
                     secureTextEntry
                     style={styles.input}
                 />
                 <TextInput
                     placeholder='Dirección'
                     value={direccion}
-                    onChangeText={setDireccion}
+                    onChangeText={(text) => handleChangeText(text, setDireccion, /^.{0,50}$/, 50)}
                     style={styles.input}
                 />
                 <TextInput
                     placeholder='Nombre de perfil'
                     value={nombrePerfil}
-                    onChangeText={setNombrePerfil}
+                    onChangeText={(text) => handleChangeText(text, setNombrePerfil, /^.{0,20}$/, 20)}
                     style={styles.input}
                 />
                 <ButtonAction
@@ -113,8 +118,6 @@ const RegisterScreen = ({ navigation }) => {
                 <TouchableOpacity onPress={() => navigation.navigate('Cuenta')}>
                     <Text style={styles.linkText}>¿Ya tienes cuenta? Login</Text>
                 </TouchableOpacity>
-
-
             </View>
 
             <Portal>
@@ -128,7 +131,6 @@ const RegisterScreen = ({ navigation }) => {
                     </View>
                 </Dialog>
             </Portal>
-
         </View>
     );
 };
