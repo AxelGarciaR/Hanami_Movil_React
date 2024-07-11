@@ -29,6 +29,12 @@ const LoginScreen = ({ navigation }) => {
         }
     };
 
+    const handleChangeText = (text, setter, regex, maxLength) => {
+        if (regex.test(text) && text.length <= maxLength) {
+            setter(text);
+        }
+    };
+
     const handlerLogin = async () => {
         try {
             // Crea un formulario FormData con los datos de usuario y contraseña
@@ -68,13 +74,13 @@ const LoginScreen = ({ navigation }) => {
                 <TextInput
                     placeholder='Correo electrónico'
                     value={email}
-                    onChangeText={setEmail}
+                    onChangeText={(text) => handleChangeText(text, setEmail, /^.{0,50}$/, 50)}
                     style={styles.input}
                 />
                 <TextInput
                     placeholder='Clave'
                     value={password}
-                    onChangeText={setPassword}
+                    onChangeText={(text) => handleChangeText(text, setPassword, /^.{0,30}$/, 30)}
                     secureTextEntry
                     style={styles.input}
                 />
