@@ -2,13 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { View, TextInput, TouchableOpacity, StyleSheet, Alert} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Text } from 'react-native-paper';
+import { Text, IconButton } from 'react-native-paper';
 import ButtonAction from '../components/ButtonAction';
 import fetchData from "../utils/fechdata";
 
 const LoginScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
 
     const validarSesion = async () => {
         try {
@@ -77,13 +82,19 @@ const LoginScreen = ({ navigation }) => {
                     onChangeText={(text) => handleChangeText(text, setEmail, /^.{0,50}$/, 50)}
                     style={styles.input}
                 />
-                <TextInput
-                    placeholder='Clave'
-                    value={password}
-                    onChangeText={(text) => handleChangeText(text, setPassword, /^.{0,30}$/, 30)}
-                    secureTextEntry
-                    style={styles.input}
-                />
+                <View style={styles.inputContainer}>
+                    <TextInput
+                        placeholder='Contraseña'
+                        value={password}
+                        onChangeText={(text) => handleChangeText(text, setPassword, /^.{0,30}$/, 30)}
+                        secureTextEntry={!showPassword}
+                    />
+                    <IconButton
+                        icon={showPassword ? 'eye-off' : 'eye'}
+                        onPress={togglePasswordVisibility}
+                        color='#757575'
+                    />
+                </View>
 
                 <TouchableOpacity style={styles.actionButton} onPress={handlerLogin}>
                     <Text style={styles.LoginText}>Iniciar sesión</Text>
@@ -133,6 +144,16 @@ const styles = StyleSheet.create({
     LoginText: {
         color: '#fff',
         textAlign: 'center',
+    },
+    inputContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 20,
+        width: '100%',
+        paddingHorizontal: 10,
+        borderWidth: 1,
+        borderColor: '#ccc',
+        justifyContent: 'space-between', // Alinea los elementos a lo largo del eje principal (horizontalmente en este caso)
     },
 });
 
