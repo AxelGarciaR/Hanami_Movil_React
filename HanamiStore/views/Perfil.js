@@ -125,6 +125,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     padding: 20,
     backgroundColor: '#fff',
+    marginTop: 20,
   },
   header: {
     flexDirection: 'row',
