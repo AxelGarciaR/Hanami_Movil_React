@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { View, ScrollView, StyleSheet, Image, Text, Alert } from 'react-native';
-import { TextInput, Card, Title, Paragraph, Button } from 'react-native-paper';
-import ButtonAction from '../components/ButtonAction'; // Asegúrate de ajustar la ruta si es necesario
+import { View, ScrollView, StyleSheet, Text, Alert, FlatList, RefreshControl } from 'react-native';
+import { TextInput, Card, Button } from 'react-native-paper';
+import ButtonAction from '../components/ButtonAction';
 import fetchData from "../utils/fechdata";
 import ProductoCard from '../components/ProductoCard';
 
-const Dashboard = () => {
+const Dashboard = ({ navigation }) => {
 
   const [dataNewProducts, setDataNewProducts] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
-
 
   const cerrarSesion = async () => {
     try {
@@ -23,7 +22,7 @@ const Dashboard = () => {
       }
     } catch (error) {
       console.error(error, "Error desde Catch");
-      Alert.alert("Error", "Ocurrió un error al iniciar sesión con bryancito");
+      Alert.alert("Error", "Ocurrió un error al cerrar sesión");
     }
   };
 
@@ -44,13 +43,15 @@ const Dashboard = () => {
 
   const onRefresh = () => {
     setRefreshing(true);
-    // Simulando una recarga de datos
     setTimeout(() => {
       getNewProducts();
       setRefreshing(false);
-    }, 200); // Tiempo de espera para la recarga
+    }, 200);
   };
 
+  useEffect(() => {
+    getNewProducts();
+  }, []);
 
   return (
     <ScrollView style={styles.container}>
@@ -70,33 +71,27 @@ const Dashboard = () => {
         <Text style={styles.sectionTitle}>Productos mas recientes</Text>
         <Text style={styles.seeAll}>See all</Text>
       </View>
-
-
-
       <View style={styles.productContainer}>
-
         <Card style={styles.productCard}>
-          <Card.Cover style={styles.cardImage} source={require('../assets/skincare.png')} />
-          <Card.Content style={styles.cardContent}>
-            <Paragraph style={styles.cardText}>Loción hidratante</Paragraph>
-            <Text style={styles.price}>$10</Text>
-          </Card.Content>
-          <Card.Actions style={styles.cardActions}>
-            <ButtonAction label="+" />
-          </Card.Actions>
+          <FlatList
+            style={styles.flatlist}
+            data={dataNewProducts}
+            keyExtractor={(item) => item.id_Producto.toString()}
+            numColumns={2}
+            columnWrapperStyle={styles.flatlistColumnWrapper}
+            renderItem={({ item }) => (
+              <ProductoCard
+                Nombre_Producto={item.Nombre_Producto}
+                precio_producto={item.precio_producto}
+                navigation={navigation}
+                idProducto={item.id_Producto}
+              />
+            )}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+          />
         </Card>
-        <Card style={styles.productCard}>
-          <Card.Cover style={styles.cardImage} source={require('../assets/skincare.png')} />
-          <Card.Content style={styles.cardContent}>
-            <Paragraph style={styles.cardText}>Loción hidratante</Paragraph>
-            <Text style={styles.price}>$10</Text>
-          </Card.Content>
-          <Card.Actions style={styles.cardActions}>
-            <ButtonAction label="+" />
-          </Card.Actions>
-        </Card>
-
-
       </View>
     </ScrollView>
   );
@@ -112,7 +107,7 @@ const styles = StyleSheet.create({
   header: {
     marginTop: 20,
     marginBottom: 20,
-    alignItems: 'center', // Centra el texto del encabezado
+    alignItems: 'center',
   },
   welcomeText: {
     fontSize: 24,
@@ -148,16 +143,17 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   productCard: {
-    width: '48%',
+    width: '100%',
+    backgroundColor: 'blue',
     marginBottom: 20,
-    borderRadius: 10, // Hace que las tarjetas sean más cuadradas
+    borderRadius: 10,
   },
   cardImage: {
     height: 150,
-    borderRadius: 10, // Hace que las imágenes sean más cuadradas
+    borderRadius: 10,
   },
   cardContent: {
-    alignItems: 'center', // Centra el contenido de la tarjeta
+    alignItems: 'center',
   },
   cardText: {
     textAlign: 'center',
@@ -169,7 +165,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   cardActions: {
-    justifyContent: 'center', // Centra el botón de acción
+    justifyContent: 'center',
+  },
+  flatlist: {
+    width: '100%',
+    paddingHorizontal: 10,
+  },
+  flatlistColumnWrapper: {
+    justifyContent: 'space-between',
   },
 });
 

@@ -1,18 +1,25 @@
 import React from 'react';
-import { View, StyleSheet, Image, Text } from 'react-native';
+import { View, StyleSheet, Image, Text, TouchableOpacity } from 'react-native';
 import { Card, Paragraph, Button } from 'react-native-paper';
 import ButtonAction from './ButtonAction'; // Ajusta la ruta según sea necesario
 
-const ProductoCard = ({ producto }) => {
+const ProductoCard = ({ Nombre_Producto, precio_producto, navigation, idProducto }) => {
   return (
     <Card style={styles.productCard}>
-      <Card.Cover style={styles.cardImage} source={producto.imagen} />
+      <Card.Cover style={styles.cardImage} source={require('../assets/skincare.png')} />
       <Card.Content style={styles.cardContent}>
-        <Paragraph style={styles.cardText}>{producto.nombre}</Paragraph>
-        <Text style={styles.price}>{`$${producto.precio}`}</Text>
+        <Paragraph style={styles.cardText}>{Nombre_Producto}</Paragraph>
+        <Text style={styles.price}>{`$${precio_producto}`}</Text>
       </Card.Content>
       <Card.Actions style={styles.cardActions}>
-        <ButtonAction label="+" />
+
+        <TouchableOpacity
+          style={[styles.button]}
+          onPress={() => navigation.navigate('DetalleProducto', { idProducto })}
+        >
+          <Text style={styles.buttonText}>Ver producto</Text>
+        </TouchableOpacity>
+
       </Card.Actions>
     </Card>
   );
@@ -43,6 +50,16 @@ const styles = StyleSheet.create({
   cardActions: {
     justifyContent: 'center',
   },
+  button: {
+    width: "100%",
+    borderRadius: 8,
+    paddingVertical: 20,
+    marginVertical: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden',
+    backgroundColor: '#FF8BA7'
+},
 });
 
 export default ProductoCard;
