@@ -1,49 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useRoute } from '@react-navigation/native';
-import { Card, Button, Paragraph, Dialog, Portal, Provider } from 'react-native-paper';
+import { Card, Button, Paragraph, Dialog, Portal, Provider, } from 'react-native-paper';
+import { useNavigation } from "@react-navigation/native";
 import ButtonAction from '../components/ButtonAction';
 import fetchData from "../utils/fechdata";
 import ProductoItem from '../components/ProductoItem';
 
-const DetalleProducto = () => {
-  const route = useRoute();
+const DetalleProducto = ({ route }) => {
   const { idProducto } = route.params;
+  const [descripcion, setDescripcion] = useState("");
+  const [nombre, setNombre] = useState("");
+  const [precio, setPrecio] = useState("");
+  const [cantidad, setCantidad] = useState("");
+  const navigation = useNavigation();
 
-  const [producto, setProducto] = useState({
-    id: idProducto,
-    nombre: '',
-    descripcion: '',
-    precio: '',
-    peso: '',
-    imagen: null,
-    cantidad: '',
-    isFavorito: false,
-  });
 
   const [dialogVisible, setDialogVisible] = useState(false);
-
-  useEffect(() => {
-    getData();
-  }, []);
 
   const getData = async () => {
     try {
       const form = new FormData();
       form.append("idProducto", idProducto);
-      const DATA = await fetchData("producto", "readOne", form);
+      const DATA = await fetchData("productos", "readOne", form);
       if (DATA.status) {
         const producto = DATA.dataset;
-        setProducto({
-          id: producto.producto_id,
-          nombre: producto.producto_nombre,
-          descripcion: producto.producto_descripcion,
-          precio: producto.producto_precio,
-          peso: producto.producto_peso,
-          imagen: producto.producto_imagen,
-          cantidad: producto.producto_cantidad,
-          isFavorito: false, // Puedes establecer esto dependiendo de tu lógica
-        });
+        setDescripcion(producto.descripcion_producto);
+        setNombre(producto.Nombre_Producto);
+        setPrecio(producto.precio_producto);
+        setCantidad(producto.CantidadP);
       } else {
         console.log("Data en el ELSE error productos", DATA);
         Alert.alert("Error productos", DATA.error);
@@ -54,13 +39,14 @@ const DetalleProducto = () => {
     }
   };
 
-  const toggleFavorito = () => {
-    setProducto({ ...producto, isFavorito: !producto.isFavorito });
-  };
+  useEffect(() => {
+    getData();
+  }, []);
 
   const agregarCarrito = () => {
     setDialogVisible(true);
   };
+
 
   const hideDialog = () => {
     setDialogVisible(false);
@@ -70,8 +56,10 @@ const DetalleProducto = () => {
     <Provider>
       <View style={styles.container}>
         <ProductoItem
-          producto={producto}
-          onToggleFavorito={toggleFavorito}
+          descripcion_producto={descripcion}
+          Nombre_Producto={nombre}
+          precio_producto={precio}
+          CantidadP={cantidad}
           onAgregarCarrito={agregarCarrito}
         />
         <Portal>

@@ -3,32 +3,26 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Card, Button, Paragraph } from 'react-native-paper';
 import ButtonAction from './ButtonAction'; // Asegúrate de ajustar la ruta según sea necesario
 
-const ProductoItem = ({ producto, onToggleFavorito, onAgregarCarrito }) => {
+const ProductoItem = ({ descripcion_producto, Nombre_Producto, precio_producto, CantidadP, onAgregarCarrito }) => {
   return (
     <Card style={styles.card}>
-      <Card.Cover source={producto.imagen} style={styles.image} />
+      <Card.Cover  source={require('../assets/skincare.png')} style={styles.image} />
       <Card.Content>
-        <Text style={styles.title}>{producto.nombre}</Text>
-        <Text style={styles.price}>{producto.precio}</Text>
-        <Text style={styles.weight}>{producto.peso}</Text>
-        <Text style={styles.descriptionTitle}>Descripción</Text>
+        <Text style={styles.title}>{Nombre_Producto}</Text>
+        <Text style={styles.price}>Precio:</Text>
+        <Text style={styles.price}>{precio_producto}</Text>
+        <Text style={styles.weight}>Cantidad:</Text>
+        <Text style={styles.weight}>{CantidadP}</Text>
+        <Text style={styles.descriptionTitle}>Descripción:</Text>
         <Paragraph style={styles.description}>
-          {producto.descripcion}
+          {descripcion_producto}
         </Paragraph>
       </Card.Content>
       <Card.Actions style={styles.actions}>
-        <Button 
-          icon={producto.isFavorito ? "heart" : "heart-outline"} 
-          onPress={onToggleFavorito} 
-          style={styles.button}
-          color="#FF7BAE"
-        >
-          Favorito
-        </Button>
-        <Button 
-          mode="contained" 
-          icon="cart" 
-          onPress={onAgregarCarrito} 
+        <Button
+          mode="contained"
+          icon="cart"
+          onPress={onAgregarCarrito}
           style={styles.button}
           color="#FF7BAE"
         >
