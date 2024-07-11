@@ -68,8 +68,7 @@ const Dashboard = ({ navigation }) => {
         Cerrar Sesión
       </Button>
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Productos mas recientes</Text>
-        <Text style={styles.seeAll}>See all</Text>
+        <Text style={styles.sectionTitle}>Productos más recientes</Text>
       </View>
       <View style={styles.productContainer}>
         <Card style={styles.productCard}>
@@ -132,6 +131,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: 'bold',
+    textAlign: 'center', // Añadido para centrar el texto
   },
   seeAll: {
     fontSize: 14,
