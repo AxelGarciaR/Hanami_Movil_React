@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFF',
     paddingHorizontal: 20,
-    marginTop: 40,
+    marginTop: 20,
   },
   header: {
     marginTop: 20,

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet, ScrollView, Alert } from 'react-native';
 import { Avatar, Button, TextInput, Title, IconButton } from 'react-native-paper';
 
@@ -33,11 +33,11 @@ const Perfil = ({ navigation }) => {
   
   const handlerEditarPerfil = async () => {
     try {
-        const form = new FormData();
-        form.append("nombre_cliente", nombre);
-        form.append("apellido_cliente", apellido);
-        form.append("CorreoE", correo);
-        form.append("Direccion", direccion);
+      const form = new FormData();
+      form.append("nombre_cliente", nombre);
+      form.append("apellido_cliente", apellido);
+      form.append("CorreoE", correo);
+      form.append("Direccion", direccion);
 
       const DATA = await fetchData("cliente", "editProfile", form);
       if (DATA.status) {
@@ -78,22 +78,24 @@ const Perfil = ({ navigation }) => {
       </View>
       <View style={styles.avatarContainer}>
         <Avatar.Icon size={80} icon="account" />
-        <Button mode="text" onPress={() => {}}>Cambiar foto</Button>
       </View>
       <TextInput
         label="Nombre del usuario"
-        value="Emily Guadalupe"
+        value={nombre} // Usar el estado en lugar de valores estáticos
         style={styles.input}
+        onChangeText={text => setNombre(text)} // Actualizar el estado al cambiar el texto
       />
       <TextInput
         label="Apellidos del usuario"
-        value="Murillo Ajueta"
+        value={apellido}
         style={styles.input}
+        onChangeText={text => setApellido(text)}
       />
       <TextInput
         label="Correo del usuario"
-        value="emi.murillo@gmail.com"
+        value={correo}
         style={styles.input}
+        onChangeText={text => setCorreo(text)}
       />
       <TextInput
         label="Clave"
@@ -104,10 +106,14 @@ const Perfil = ({ navigation }) => {
       />
       <TextInput
         label="Dirección"
-        value="San Salvador, El Salvador"
+        value={direccion}
         style={styles.input}
+        onChangeText={text => setDireccion(text)}
       />
-      <Button mode="contained" style={styles.button} onPress={() => {}}>
+      <Button mode="contained" style={styles.button} onPress={handlerEditarPerfil}>
+        GUARDAR CAMBIOS
+      </Button>
+      <Button mode="contained" style={styles.button} onPress={handleLogout}>
         CERRAR SESIÓN
       </Button>
     </ScrollView>

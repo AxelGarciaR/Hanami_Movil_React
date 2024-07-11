@@ -79,6 +79,7 @@ const styles = StyleSheet.create({
   touchable: {
     flex: 1,
     margin: 8,
+    marginTop: 20,
   },
   card: {
     width: (Dimensions.get('window').width / 2) - 24, // Ajusta el ancho de las tarjetas para que ocupen la mitad del ancho de la pantalla
