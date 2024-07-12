@@ -42,9 +42,8 @@ const fetchData = async (filename, action, form = null) => {
             throw new Error('Expected JSON, but received: ' + contentType);
         }
     } catch (error) {
-        // Capturar y manejar errores de la solicitud
         console.error('Fetch error:', error);
-        return { error: true, message: error.message }; // Devolver un objeto con error y mensaje
+        return { error: true, message: error.message };
     }
 };
 

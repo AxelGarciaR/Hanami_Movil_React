@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, TextInput, TouchableOpacity, StyleSheet, Image, Alert, ScrollView } from 'react-native';
-import { Button, Text, Dialog, Portal, IconButton } from 'react-native-paper';
+import { Button, Text, Dialog, Portal, IconButton, HelperText } from 'react-native-paper';
 import ButtonAction from './ButtonAction'; // Ajusta la ruta según sea necesario
 import fetchData from "../utils/fechdata"; // Importación de función utilitaria para manejar datos
 
@@ -15,6 +15,7 @@ const RegisterScreen = ({ navigation }) => {
     const [nombrePerfil, setNombrePerfil] = useState('');
     const [registroExitoso, setRegistroExitoso] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+    const [emailError, setEmailError] = useState(''); // Estado para manejar el error del correo electrónico
 
     // Función para mostrar el diálogo de registro exitoso
     const showDialog = () => setRegistroExitoso(true);
@@ -34,9 +35,14 @@ const RegisterScreen = ({ navigation }) => {
     const handleChangeText = (text, setter, regex, maxLength) => {
         if (regex.test(text) && text.length <= maxLength) {
             setter(text);
+            // Limpiar el mensaje de error del correo electrónico si se está modificando el campo de email
+            if (setter === setEmail) {
+                setEmailError('');
+            }
         }
     };
 
+    // Función para manejar el registro de usuario
     // Función para manejar el registro de usuario
     const handlerRegistro = async () => {
         try {
@@ -64,10 +70,9 @@ const RegisterScreen = ({ navigation }) => {
                 setNombrePerfil("");
                 showDialog();
             } else {
-                // Si hay un error, mostrar el mensaje de error recibido del backend
+                // Aquí maneja específicamente el error que viene desde fetchData
                 console.log(DATA.error);
-                Alert.alert("Error", DATA.error);
-                return;
+                Alert.alert("Error", DATA.error); // Asegúrate de mostrar la alerta aquí
             }
         } catch (error) {
             // Capturar y mostrar cualquier error inesperado
@@ -103,6 +108,9 @@ const RegisterScreen = ({ navigation }) => {
                             onChangeText={(text) => handleChangeText(text, setEmail, /^.{0,50}$/, 50)}
                             style={styles.input}
                         />
+                        <HelperText type="error" visible={emailError !== ''}>
+                            {emailError}
+                        </HelperText>
                     </View>
                     <View style={styles.inputContainer}>
                         <TextInput

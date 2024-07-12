@@ -48,21 +48,23 @@ const LoginScreen = ({ navigation }) => {
             const form = new FormData();
             form.append("correoCliente", email);
             form.append("claveCliente", password);
-
+    
             const DATA = await fetchData("cliente", "logIn", form);
-
+    
             if (DATA.status) {
                 setPassword("");
                 setEmail("");
                 navigation.replace("Dashboard"); // Redirige al dashboard si el inicio de sesión es exitoso
             } else {
-                console.log(DATA);
+                // Mostrar un mensaje de error específico al usuario
+                Alert.alert("Error", DATA.error);
             }
         } catch (error) {
-            console.error(error, "Error desde Catch");
+            console.error(error);
             Alert.alert("Error", "Ocurrió un error al iniciar sesión");
         }
     };
+    
 
     // Validación de formato de correo electrónico
     const validateEmail = (email) => {
