@@ -1,23 +1,28 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Card, Button, Paragraph } from 'react-native-paper';
-import ButtonAction from './ButtonAction'; // Asegúrate de ajustar la ruta según sea necesario
+import ButtonAction from './ButtonAction'; // Ajusta la ruta según sea necesario
 
 const ProductoItem = ({ descripcion_producto, Nombre_Producto, precio_producto, CantidadP, onAgregarCarrito }) => {
   return (
     <Card style={styles.card}>
-      <Card.Cover  source={require('../assets/skincare.png')} style={styles.image} />
+      <Card.Cover source={require('../assets/skincare.png')} style={styles.image} />
+
       <Card.Content>
         <Text style={styles.title}>{Nombre_Producto}</Text>
+        
         <Text style={styles.price}>Precio:</Text>
         <Text style={styles.price}>{precio_producto}</Text>
+        
         <Text style={styles.weight}>Cantidad:</Text>
         <Text style={styles.weight}>{CantidadP}</Text>
+        
         <Text style={styles.descriptionTitle}>Descripción:</Text>
         <Paragraph style={styles.description}>
           {descripcion_producto}
         </Paragraph>
       </Card.Content>
+
       <Card.Actions style={styles.actions}>
         <Button
           mode="contained"
@@ -33,6 +38,7 @@ const ProductoItem = ({ descripcion_producto, Nombre_Producto, precio_producto, 
   );
 };
 
+// Estilos del componente ProductoItem
 const styles = StyleSheet.create({
   card: {
     flex: 1,

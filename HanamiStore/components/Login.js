@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { Text, IconButton, HelperText } from 'react-native-paper';
-import fetchData from "../utils/fechdata";
-
+import fetchData from "../utils/fechdata"; // Importa fetchData desde la ubicación correcta
 
 const LoginScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
@@ -10,17 +9,19 @@ const LoginScreen = ({ navigation }) => {
     const [showPassword, setShowPassword] = useState(false);
     const [emailError, setEmailError] = useState('');
 
+    // Función para alternar la visibilidad de la contraseña
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
 
+    // Función para validar la sesión al cargar el componente
     const validarSesion = async () => {
         try {
             const DATA = await fetchData("cliente", "getUser");
             if (DATA.session) {
                 setEmail("");
                 setPassword("");
-                navigation.replace("Perfil");
+                navigation.replace("Perfil"); // Redirige al perfil si hay una sesión activa
             } else {
                 console.log("No hay sesión activa");
                 return;
@@ -31,6 +32,7 @@ const LoginScreen = ({ navigation }) => {
         }
     };
 
+    // Función para manejar cambios en el texto con validación
     const handleChangeText = (text, setter, regex, maxLength) => {
         if (regex.test(text) && text.length <= maxLength) {
             setter(text);
@@ -40,6 +42,7 @@ const LoginScreen = ({ navigation }) => {
         }
     };
 
+    // Función para manejar el inicio de sesión
     const handleLogin = async () => {
         try {
             const form = new FormData();
@@ -51,7 +54,7 @@ const LoginScreen = ({ navigation }) => {
             if (DATA.status) {
                 setPassword("");
                 setEmail("");
-                navigation.replace("Dashboard");
+                navigation.replace("Dashboard"); // Redirige al dashboard si el inicio de sesión es exitoso
             } else {
                 console.log(DATA);
             }
@@ -61,16 +64,13 @@ const LoginScreen = ({ navigation }) => {
         }
     };
 
-    useEffect(() => {
-        validarSesion();
-    }, []);
-
+    // Validación de formato de correo electrónico
     const validateEmail = (email) => {
-        // Expresión regular para validar el correo electrónico
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return regex.test(email);
     };
 
+    // Maneja el cambio de texto en el campo de correo electrónico
     const handleEmailChange = (text) => {
         setEmail(text);
         if (!validateEmail(text)) {
@@ -118,6 +118,7 @@ const LoginScreen = ({ navigation }) => {
     );
 };
 
+// Estilos del componente LoginScreen
 const styles = StyleSheet.create({
     formContainer: {
         width: '100%',

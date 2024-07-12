@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { View, TextInput, TouchableOpacity, StyleSheet, Image, Alert, ScrollView } from 'react-native';
 import { Button, Text, Dialog, Portal, IconButton } from 'react-native-paper';
-import ButtonAction from './ButtonAction';
-import fetchData from "../utils/fechdata";
+import ButtonAction from './ButtonAction'; // Ajusta la ruta según sea necesario
+import fetchData from "../utils/fechdata"; // Importación de función utilitaria para manejar datos
 
 const RegisterScreen = ({ navigation }) => {
+    // Estados para almacenar los datos del formulario y controlar la visibilidad de la contraseña
     const [nombres, setNombres] = useState('');
     const [apellidos, setApellidos] = useState('');
     const [email, setEmail] = useState('');
@@ -15,24 +16,31 @@ const RegisterScreen = ({ navigation }) => {
     const [registroExitoso, setRegistroExitoso] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
 
+    // Función para mostrar el diálogo de registro exitoso
     const showDialog = () => setRegistroExitoso(true);
+
+    // Función para ocultar el diálogo y redirigir al inicio de sesión
     const hideDialog = () => {
         setRegistroExitoso(false);
         navigation.navigate('Cuenta'); // Redirige al login
     };
 
+    // Función para alternar la visibilidad de la contraseña
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
 
+    // Función para manejar cambios en los campos de texto del formulario
     const handleChangeText = (text, setter, regex, maxLength) => {
         if (regex.test(text) && text.length <= maxLength) {
             setter(text);
         }
     };
 
+    // Función para manejar el registro de usuario
     const handlerRegistro = async () => {
         try {
+            // Crear un objeto FormData con los datos del formulario
             const form = new FormData();
             form.append("nombreCliente", nombres);
             form.append("apellidoCliente", apellidos);
@@ -42,7 +50,10 @@ const RegisterScreen = ({ navigation }) => {
             form.append("correoCliente", email);
             form.append("direccionCliente", direccion);
 
+            // Llamar a la función fetchData para enviar datos al backend y recibir respuesta
             const DATA = await fetchData("cliente", "signUp", form);
+
+            // Si el registro es exitoso, limpiar los campos y mostrar el diálogo de éxito
             if (DATA.status) {
                 setNombres("");
                 setApellidos("");
@@ -51,15 +62,15 @@ const RegisterScreen = ({ navigation }) => {
                 setConfirmPassword("");
                 setDireccion("");
                 setNombrePerfil("");
-                
                 showDialog();
-
             } else {
+                // Si hay un error, mostrar el mensaje de error recibido del backend
                 console.log(DATA.error);
                 Alert.alert("Error", DATA.error);
                 return;
             }
         } catch (error) {
+            // Capturar y mostrar cualquier error inesperado
             console.error(error);
             Alert.alert("Error", "Ocurrió un error al registrar la cuenta");
         }
@@ -144,9 +155,8 @@ const RegisterScreen = ({ navigation }) => {
                     >
                         Crear
                     </ButtonAction>
-
                     <TouchableOpacity onPress={() => navigation.navigate('Cuenta')}>
-                        <Text style={styles.linkText}>¿Ya tienes cuenta? Login</Text>
+                        <Text style={styles.linkText}>¿Ya tienes cuenta? Iniciar sesión</Text>
                     </TouchableOpacity>
                 </View>
             </ScrollView>
@@ -166,6 +176,7 @@ const RegisterScreen = ({ navigation }) => {
     );
 };
 
+// Estilos para el componente RegisterScreen
 const styles = StyleSheet.create({
     scrollContainer: {
         flexGrow: 1,

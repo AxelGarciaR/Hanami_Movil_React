@@ -7,24 +7,26 @@ const ProductoCard = ({ Nombre_Producto, precio_producto, navigation, idProducto
   return (
     <Card style={styles.productCard}>
       <Card.Cover style={styles.cardImage} source={require('../assets/skincare.png')} />
+
       <Card.Content style={styles.cardContent}>
         <Paragraph style={styles.cardText}>{Nombre_Producto}</Paragraph>
+        
         <Text style={styles.price}>{`$${precio_producto}`}</Text>
       </Card.Content>
-      <Card.Actions style={styles.cardActions}>
 
+      <Card.Actions style={styles.cardActions}>
         <TouchableOpacity
           style={[styles.button]}
           onPress={() => navigation.navigate('DetalleProducto', { idProducto })}
         >
           <Text style={styles.buttonText}>Ver producto</Text>
         </TouchableOpacity>
-
       </Card.Actions>
     </Card>
   );
 };
 
+// Estilos del componente ProductoCard
 const styles = StyleSheet.create({
   productCard: {
     width: '48%',
@@ -59,7 +61,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     overflow: 'hidden',
     backgroundColor: '#FF8BA7'
-},
+  },
+  buttonText: {
+    color: '#fff',
+    textAlign: 'center',
+  },
 });
 
 export default ProductoCard;
