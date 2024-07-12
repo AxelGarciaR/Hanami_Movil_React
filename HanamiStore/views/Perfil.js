@@ -1,37 +1,43 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, ScrollView, Alert } from 'react-native';
 import { Avatar, Button, TextInput, Title, IconButton } from 'react-native-paper';
 import fetchData from "../utils/fechdata";
 
 const Perfil = ({ navigation }) => {
-
-  //Constantes de js para la api
+  // Constantes de js para la api
   const [nombre, setNombre] = useState("");
   const [apellido, setApellido] = useState("");
   const [correo, setCorreo] = useState("");
   const [direccion, setDireccion] = useState("");
-  /////////////////////////////////////////////
+  const [clave, setClave] = useState(""); // Estado para la nueva clave
+
+  useEffect(() => {
+    getPerfilData();
+  }, []);
 
   const getPerfilData = async () => {
     try {
       const DATA = await fetchData("cliente", "getProfile");
       if (DATA.status) {
-        const usuario = DATA.dataset;
-        setNombre(usuario.nombre_cliente);
-        setApellido(usuario.apellido_cliente);
-        setCorreo(usuario.CorreoE);
-        setDireccion(usuario.Direccion);
+        const usuario = DATA.data; // Cambiado dataset a data
+        if (usuario) {
+          setNombre(usuario.nombre_cliente || "");
+          setApellido(usuario.apellido_cliente || "");
+          setCorreo(usuario.CorreoE || "");
+          setDireccion(usuario.Direccion || "");
+        } else {
+          Alert.alert("Error", "Datos del usuario no disponibles");
+        }
       } else {
         console.log(DATA.error);
         Alert.alert("Error", DATA.error);
-        return;
       }
     } catch (error) {
       console.error(error);
-      Alert.alert("Error", "Ocurrió un error al registrar la cuenta");
+      Alert.alert("Error", "Ocurrió un error al obtener la información del perfil");
     }
   };
-  
+
   const handlerEditarPerfil = async () => {
     try {
       const form = new FormData();
@@ -39,6 +45,9 @@ const Perfil = ({ navigation }) => {
       form.append("apellido_cliente", apellido);
       form.append("CorreoE", correo);
       form.append("Direccion", direccion);
+      if (clave) {
+        form.append("Clave", clave);
+      }
 
       const DATA = await fetchData("cliente", "editProfile", form);
       if (DATA.status) {
@@ -46,11 +55,10 @@ const Perfil = ({ navigation }) => {
       } else {
         console.log(DATA.error);
         Alert.alert("Error", DATA.error);
-        return;
       }
     } catch (error) {
       console.error(error);
-      Alert.alert("Error", "Ocurrió un error al registrar la cuenta");
+      Alert.alert("Error", "Ocurrió un error al actualizar la información del perfil");
     }
   };
 
@@ -77,9 +85,9 @@ const Perfil = ({ navigation }) => {
       </View>
       <TextInput
         label="Nombre del usuario"
-        value={nombre} // Usar el estado en lugar de valores estáticos
+        value={nombre}
         style={styles.input}
-        onChangeText={text => setNombre(text)} // Actualizar el estado al cambiar el texto
+        onChangeText={text => setNombre(text)}
       />
       <TextInput
         label="Apellidos del usuario"
@@ -95,10 +103,11 @@ const Perfil = ({ navigation }) => {
       />
       <TextInput
         label="Clave"
-        value="********"
+        value={clave}
         secureTextEntry
         right={<TextInput.Icon name="pencil" />}
         style={styles.input}
+        onChangeText={text => setClave(text)}
       />
       <TextInput
         label="Dirección"

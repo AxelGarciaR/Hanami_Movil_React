@@ -20,7 +20,7 @@ const LoginScreen = ({ navigation }) => {
             if (DATA.session) {
                 setEmail("");
                 setPassword("");
-                navigation.replace("Dashboard");
+                navigation.replace("Perfil");
             } else {
                 console.log("No hay sesión activa");
                 return;
