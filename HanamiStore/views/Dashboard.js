@@ -4,27 +4,12 @@ import { TextInput, Card, Button } from 'react-native-paper';
 import ButtonAction from '../components/ButtonAction';
 import fetchData from "../utils/fechdata";
 import ProductoCard from '../components/ProductoCard';
+import { useRoute } from '@react-navigation/native';
 
 const Dashboard = ({ navigation }) => {
-
+  const route = useRoute();
   const [dataNewProducts, setDataNewProducts] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
-
-  const cerrarSesion = async () => {
-    try {
-      const DATA = await fetchData("cliente", "logOut");
-
-      if (DATA.status) {
-        console.log("Sesión Finalizada");
-        navigation.replace("Cuenta");
-      } else {
-        console.log("No se pudo eliminar la sesión");
-      }
-    } catch (error) {
-      console.error(error, "Error desde Catch");
-      Alert.alert("Error", "Ocurrió un error al cerrar sesión");
-    }
-  };
 
   const getNewProducts = async () => {
     try {
@@ -56,17 +41,14 @@ const Dashboard = ({ navigation }) => {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.welcomeText}>¡Bienvenido/a</Text>
-        <Text style={styles.nameText}>Emily Murillo</Text>
+        <Text style={styles.welcomeText}>¡Bienvenido/a!</Text>
+        <Text style={styles.nameText}>{route.params?.nombrePerfil}</Text>
       </View>
       <TextInput
         placeholder="Buscar productos"
         left={<TextInput.Icon name="card-search-outline" />}
         style={styles.searchInput}
       />
-      <Button mode="contained" onPress={cerrarSesion} style={styles.logoutButton}>
-        Cerrar Sesión
-      </Button>
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Productos más recientes</Text>
       </View>
@@ -131,11 +113,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    textAlign: 'center', // Añadido para centrar el texto
-  },
-  seeAll: {
-    fontSize: 14,
-    color: '#007BFF',
+    textAlign: 'center',
   },
   productContainer: {
     flexDirection: 'row',
@@ -144,28 +122,10 @@ const styles = StyleSheet.create({
   },
   productCard: {
     width: '100%',
-    backgroundColor: 'blue',
+    backgroundColor: '#E0E0E0', // Color modificado para visibilidad
     marginBottom: 20,
     borderRadius: 10,
-  },
-  cardImage: {
-    height: 150,
-    borderRadius: 10,
-  },
-  cardContent: {
-    alignItems: 'center',
-  },
-  cardText: {
-    textAlign: 'center',
-  },
-  price: {
-    marginTop: 10,
-    fontSize: 16,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  cardActions: {
-    justifyContent: 'center',
+    padding: 10,
   },
   flatlist: {
     width: '100%',

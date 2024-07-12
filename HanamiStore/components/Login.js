@@ -3,6 +3,7 @@ import { View, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-nati
 import { Text, IconButton, HelperText } from 'react-native-paper';
 import fetchData from "../utils/fechdata";
 
+
 const LoginScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');

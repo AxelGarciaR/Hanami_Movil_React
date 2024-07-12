@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, ScrollView, Alert } from 'react-native';
 import { Avatar, Button, TextInput, Title, IconButton } from 'react-native-paper';
+import fetchData from "../utils/fechdata";
 
 const Perfil = ({ navigation }) => {
 
@@ -69,11 +70,6 @@ const Perfil = ({ navigation }) => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.header}>
-        <IconButton
-          icon="close"
-          size={24}
-          onPress={() => navigation.goBack()}
-        />
         <Title>Información del Usuario</Title>
       </View>
       <View style={styles.avatarContainer}>
