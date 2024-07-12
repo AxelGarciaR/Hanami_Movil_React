@@ -11,27 +11,31 @@ const NuevaContra = ({ navigation }) => {
     const [passwordsMismatch, setPasswordsMismatch] = useState(false);
     const [emptyFields, setEmptyFields] = useState(false);
 
+    // Función para alternar la visibilidad de la contraseña
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
 
+    // Función para ocultar todos los diálogos de alerta
     const hideDialog = () => {
         setCambioDeContraExitoso(false);
         setPasswordsMismatch(false);
         setEmptyFields(false);
     };
 
+    // Función para manejar el restablecimiento de contraseña
     const handlePasswordReset = () => {
         if (!pass || !newPass) {
             setEmptyFields(true);
         } else if (pass !== newPass) {
             setPasswordsMismatch(true);
         } else {
-            // Lógica para restablecer la contraseña
+            // Lógica para restablecer la contraseña (simulada)
             setCambioDeContraExitoso(true);
         }
     };
 
+    // Función para cerrar el diálogo de cambio de contraseña exitoso
     const handleSuccessDialogDismiss = () => {
         setCambioDeContraExitoso(false);
         navigation.navigate('Cuenta');
@@ -88,6 +92,7 @@ const NuevaContra = ({ navigation }) => {
                     >
                         Restablecer contraseña
                     </ButtonAction>
+
                     <Portal>
                         <Dialog visible={cambiodeContraExitoso} onDismiss={handleSuccessDialogDismiss}>
                             <View style={styles.dialogContent}>

@@ -1,25 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, ScrollView, Alert } from 'react-native';
 import { Avatar, Button, TextInput, Title, IconButton } from 'react-native-paper';
-import fetchData from "../utils/fechdata";
+import fetchData from "../utils/fechdata"; // Importación de utilidad para fetch
 
 const Perfil = ({ navigation }) => {
-  // Constantes de js para la api
+  // Estados para almacenar los datos del usuario
   const [nombre, setNombre] = useState("");
   const [apellido, setApellido] = useState("");
   const [correo, setCorreo] = useState("");
   const [direccion, setDireccion] = useState("");
   const [clave, setClave] = useState(""); // Estado para la nueva clave
 
+  // Función useEffect para cargar datos del perfil al inicio
   useEffect(() => {
     getPerfilData();
   }, []);
 
+  // Función asincrónica para obtener datos del perfil desde la API
   const getPerfilData = async () => {
     try {
       const DATA = await fetchData("cliente", "getProfile");
       if (DATA.status) {
-        const usuario = DATA.data; // Cambiado dataset a data
+        const usuario = DATA.data; // Obtención de datos del usuario desde la respuesta
         if (usuario) {
           setNombre(usuario.nombre_cliente || "");
           setApellido(usuario.apellido_cliente || "");
@@ -38,6 +40,7 @@ const Perfil = ({ navigation }) => {
     }
   };
 
+  // Función asincrónica para manejar la edición del perfil
   const handlerEditarPerfil = async () => {
     try {
       const form = new FormData();
@@ -46,15 +49,15 @@ const Perfil = ({ navigation }) => {
       form.append("CorreoE", correo);
       form.append("Direccion", direccion);
       if (clave) {
-        form.append("Clave", clave);
+        form.append("Clave", clave); // Se agrega la clave solo si se ha ingresado nueva
       }
 
-      const DATA = await fetchData("cliente", "editProfile", form);
+      const DATA = await fetchData("cliente", "editProfile", form); // Llamada a API para editar perfil
       if (DATA.status) {
-        Alert.alert("Hecho!", DATA.message);
+        Alert.alert("Hecho!", DATA.message); // Alerta de éxito al editar perfil
       } else {
         console.log(DATA.error);
-        Alert.alert("Error", DATA.error);
+        Alert.alert("Error", DATA.error); // Alerta de error al editar perfil
       }
     } catch (error) {
       console.error(error);
@@ -62,13 +65,14 @@ const Perfil = ({ navigation }) => {
     }
   };
 
+  // Función asincrónica para manejar el cierre de sesión
   const handleLogout = async () => {
     try {
-      const DATA = await fetchData("cliente", "logOut");
+      const DATA = await fetchData("cliente", "logOut"); // Llamada a API para cerrar sesión
       if (DATA.status) {
-        navigation.navigate('Cuenta');
+        navigation.navigate('Cuenta'); // Redirección a la pantalla de cuenta al cerrar sesión exitosamente
       } else {
-        Alert.alert('Error', DATA.error);
+        Alert.alert('Error', DATA.error); // Alerta de error al intentar cerrar sesión
       }
     } catch (error) {
       Alert.alert('Error', 'Ocurrió un error al cerrar la sesión');

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { View, Image, StyleSheet } from 'react-native';
 import { Button } from 'react-native-paper';
-import LoginScreen from '../components/Login'; // Asegúrate de importar el componente correcto
-import RegisterScreen from '../components/Registro'; // Asegúrate de importar el componente correcto
+import LoginScreen from '../components/Login'; // Importación del componente de Login
+import RegisterScreen from '../components/Registro'; // Importación del componente de Registro
 
 const Cuenta = ({ navigation }) => {
-    const [screen, setScreen] = useState('login');
+    const [screen, setScreen] = useState('login'); // Estado para controlar qué pantalla mostrar
 
     return (
         <View style={styles.container}>
@@ -37,6 +37,7 @@ const Cuenta = ({ navigation }) => {
     );
 };
 
+// Estilos para el componente Cuenta
 const styles = StyleSheet.create({
     container: {
         flex: 1,

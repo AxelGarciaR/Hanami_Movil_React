@@ -4,8 +4,9 @@ import { Card, Button, Dialog, Portal } from 'react-native-paper';
 import ButtonAction from '../components/ButtonAction';
 
 const Carrito = ({ navigation }) => {
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(false); // Estado para controlar la visibilidad del diálogo de confirmación
 
+  // Lista de productos simulados
   const productos = [
     { id: 1, name: 'Gel hidratante nivea', price: 22.00, image: require('../assets/skincare.png') },
     { id: 2, name: 'Gel hidratante nivea', price: 22.00, image: require('../assets/skincare.png') },
@@ -14,31 +15,37 @@ const Carrito = ({ navigation }) => {
     { id: 5, name: 'Gel hidratante nivea', price: 22.00, image: require('../assets/skincare.png') },
   ];
 
+  // Cálculo del total de los productos en el carrito
   const total = productos.reduce((sum, product) => sum + product.price, 0);
 
+  // Función para mostrar el diálogo de confirmación
   const showDialog = () => setVisible(true);
+
+  // Función para ocultar el diálogo de confirmación
   const hideDialog = () => setVisible(false);
 
+  // Función para manejar el pago (aquí puedes añadir lógica adicional como realizar un pago real)
   const handlePayment = () => {
-    // Aquí puedes manejar la navegación si se confirma el pago
-    navigation.navigate('MisProductos');
-    // También puedes añadir lógica adicional como realizar un pago real aquí
+    navigation.navigate('MisProductos'); // Redirige al usuario después de pagar
+    // Aquí podrías añadir lógica adicional como procesar el pago real
   };
 
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.headerText}>Mis productos</Text>
+
       {productos.map((producto) => (
         <Card key={producto.id} style={styles.productCard}>
           <View style={styles.cardContent}>
             <Image source={producto.image} style={styles.productImage} />
             <View style={styles.productDetails}>
               <Text style={styles.productName}>{producto.name}</Text>
-              <Text style={styles.productPrice}>precio {producto.price.toFixed(2)}$</Text>
+              <Text style={styles.productPrice}>Precio: {producto.price.toFixed(2)}$</Text>
             </View>
           </View>
         </Card>
       ))}
+
       <View style={styles.totalContainer}>
         <Text style={styles.totalText}>Total: {total.toFixed(2)}$</Text>
         <ButtonAction mode="contained" style={styles.payButton} onPress={showDialog}>Pagar</ButtonAction>
@@ -60,6 +67,7 @@ const Carrito = ({ navigation }) => {
   );
 };
 
+// Estilos para el componente Carrito
 const styles = StyleSheet.create({
   container: {
     marginTop: 20,

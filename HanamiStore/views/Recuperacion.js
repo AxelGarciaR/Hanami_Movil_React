@@ -1,29 +1,30 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, TextInput, ScrollView } from 'react-native';
 import { IconButton, Portal, Dialog } from 'react-native-paper';
-import ButtonAction from '../components/ButtonAction';
-import CustomAlert from 'react-native-dialog';
+import ButtonAction from '../components/ButtonAction'; // Componente personalizado de botón
+import CustomAlert from 'react-native-dialog'; // Importación de componente de alerta personalizado (no utilizado en el código actual)
 
 const Recuperacion = ({ navigation }) => {
-    const [email, setEmail] = useState('');
-    const [showAlert, setShowAlert] = useState(false);
+    const [email, setEmail] = useState(''); // Estado para almacenar el correo electrónico ingresado
+    const [showAlert, setShowAlert] = useState(false); // Estado para controlar la visibilidad de la alerta
 
+    // Función para manejar el envío del código de recuperación
     const handleSendCode = () => {
-        const emailRegex = /\S+@\S+\.\S+/;
-        if (!emailRegex.test(email)) {
-            setShowAlert(true);
+        const emailRegex = /\S+@\S+\.\S+/; // Expresión regular para validar el formato del correo electrónico
+        if (!emailRegex.test(email)) { // Validación del correo electrónico
+            setShowAlert(true); // Mostrar alerta si el correo no es válido
             return;
         }
-        // Aquí puedes enviar el código de recuperación por correo
-        // y luego navegar a la pantalla adecuada
-        navigation.navigate('CodigoContra');
+        // Aquí deberías implementar la lógica para enviar el código de recuperación por correo electrónico
+        // y luego navegar a la pantalla adecuada para ingresar el código
+        navigation.navigate('CodigoContra'); // Navegar a la pantalla 'CodigoContra' una vez enviado el código
     };
 
     return (
         <ScrollView contentContainerStyle={styles.scrollContainer}>
             <View style={styles.container}>
                 <Image
-                    source={require('../assets/hanami.png')}
+                    source={require('../assets/hanami.png')} // Ruta de tu imagen de cabecera
                     style={styles.image}
                     resizeMode="cover"
                 />
@@ -32,7 +33,7 @@ const Recuperacion = ({ navigation }) => {
                 </Text>
                 <View style={styles.whiteContainer}>
                     <Image
-                        source={require('../assets/logounohanami.png')} // Ruta de tu imagen
+                        source={require('../assets/logounohanami.png')} // Ruta de tu imagen de logo
                         style={styles.imagedos}
                     />
                     <Text style={styles.textdos}>
@@ -58,7 +59,7 @@ const Recuperacion = ({ navigation }) => {
                 <Dialog visible={showAlert} onDismiss={() => setShowAlert(false)}>
                     <View style={styles.dialogContent}>
                         <Image
-                            source={require('../assets/cancelar.png')}
+                            source={require('../assets/cancelar.png')} // Ruta de tu imagen de cancelar
                             style={styles.dialogImage}
                         />
                         <Text style={styles.dialogText}>Ingresa un correo válido</Text>
@@ -75,7 +76,7 @@ const Recuperacion = ({ navigation }) => {
 const styles = StyleSheet.create({
     scrollContainer: {
         flexGrow: 1,
-        backgroundColor: '#FFC8DD',
+        backgroundColor: '#FFC8DD', // Color de fondo del scroll view
     },
     container: {
         flex: 1,
@@ -83,13 +84,13 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
     },
     image: {
-        width: '50%',
-        height: 200,
+        width: '50%', // Ancho de la imagen de cabecera
+        height: 200, // Altura de la imagen de cabecera
         marginBottom: 5,
     },
     imagedos: {
-        width: '100%',
-        height: 250,
+        width: '100%', // Ancho de la imagen de logo
+        height: 250, // Altura de la imagen de logo
         marginBottom: 10,
     },
     text: {
@@ -113,7 +114,7 @@ const styles = StyleSheet.create({
     whiteContainer: {
         flex: 1,
         width: '100%',
-        backgroundColor: '#FFFFFF',
+        backgroundColor: '#FFFFFF', // Color de fondo del contenedor blanco
         alignItems: 'center',
         justifyContent: 'center',
         paddingHorizontal: 50,
@@ -130,8 +131,8 @@ const styles = StyleSheet.create({
         padding: 20,
     },
     dialogImage: {
-        width: 100,
-        height: 100,
+        width: 100, // Ancho de la imagen de alerta de cancelación
+        height: 100, // Altura de la imagen de alerta de cancelación
         marginBottom: 10,
     },
     dialogText: {

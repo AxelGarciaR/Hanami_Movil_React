@@ -8,7 +8,7 @@ const Inicio = ({ navigation }) => {
             <Image
                 source={require('../assets/hanami.png')}
                 style={styles.image}
-                resizeMode="cover"a
+                resizeMode="cover"
             />
             <Text style={styles.text}>
                 HANAMI{'\n'}Beauty and Care
@@ -25,6 +25,7 @@ const Inicio = ({ navigation }) => {
     );
 };
 
+// Estilos para el componente Inicio
 const styles = StyleSheet.create({
     container: {
         flex: 1,

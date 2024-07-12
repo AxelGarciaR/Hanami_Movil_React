@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { View, ScrollView, StyleSheet, Text, Alert, FlatList, RefreshControl } from 'react-native';
-import { TextInput, Card, Button } from 'react-native-paper';
-import ButtonAction from '../components/ButtonAction';
+import { TextInput, Card } from 'react-native-paper';
 import fetchData from "../utils/fechdata";
 import ProductoCard from '../components/ProductoCard';
 import { useRoute } from '@react-navigation/native';
 
 const Dashboard = ({ navigation }) => {
   const route = useRoute();
-  const [dataNewProducts, setDataNewProducts] = useState([]);
-  const [refreshing, setRefreshing] = useState(false);
+  const [dataNewProducts, setDataNewProducts] = useState([]); // Estado para almacenar los productos más recientes
+  const [refreshing, setRefreshing] = useState(false); // Estado para controlar el estado de refrescado de la lista
 
+  // Función para obtener los productos más recientes desde la API
   const getNewProducts = async () => {
     try {
       const DATA = await fetchData("productos", "newProduct");
       if (DATA.status) {
-        setDataNewProducts(DATA.dataset);
+        setDataNewProducts(DATA.dataset); // Actualiza el estado con los datos de los productos
       } else {
         console.log("Data en el ELSE error productos", DATA);
         Alert.alert("Error productos", DATA.error);
@@ -26,14 +26,16 @@ const Dashboard = ({ navigation }) => {
     }
   };
 
+  // Función para manejar el evento de refrescar la lista de productos
   const onRefresh = () => {
-    setRefreshing(true);
+    setRefreshing(true); // Activa el indicador de refrescado
     setTimeout(() => {
-      getNewProducts();
-      setRefreshing(false);
+      getNewProducts(); // Llama a la función para obtener los productos más recientes
+      setRefreshing(false); // Desactiva el indicador de refrescado después de 200ms
     }, 200);
   };
 
+  // Efecto para cargar los productos más recientes al cargar el componente
   useEffect(() => {
     getNewProducts();
   }, []);
@@ -44,14 +46,17 @@ const Dashboard = ({ navigation }) => {
         <Text style={styles.welcomeText}>¡Bienvenido/a!</Text>
         <Text style={styles.nameText}>{route.params?.nombrePerfil}</Text>
       </View>
+      
       <TextInput
         placeholder="Buscar productos"
         left={<TextInput.Icon name="card-search-outline" />}
         style={styles.searchInput}
       />
+      
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Productos más recientes</Text>
       </View>
+      
       <View style={styles.productContainer}>
         <Card style={styles.productCard}>
           <FlatList
@@ -69,7 +74,7 @@ const Dashboard = ({ navigation }) => {
               />
             )}
             refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} /> // Componente de control de refresco
             }
           />
         </Card>
@@ -78,6 +83,7 @@ const Dashboard = ({ navigation }) => {
   );
 };
 
+// Estilos para el componente Dashboard
 const styles = StyleSheet.create({
   container: {
     flex: 1,

@@ -1,37 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { useRoute } from '@react-navigation/native';
-import { Card, Button, Paragraph, Dialog, Portal, Provider, } from 'react-native-paper';
+import { Card, Paragraph, Dialog, Portal, Provider } from 'react-native-paper';
 import { useNavigation } from "@react-navigation/native";
 import ButtonAction from '../components/ButtonAction';
 import fetchData from "../utils/fechdata";
 import ProductoItem from '../components/ProductoItem';
 
 const DetalleProducto = ({ route }) => {
-  const { idProducto } = route.params;
-  const [descripcion, setDescripcion] = useState("");
-  const [nombre, setNombre] = useState("");
-  const [precio, setPrecio] = useState("");
-  const [cantidad, setCantidad] = useState("");
-  const navigation = useNavigation();
+  const { idProducto } = route.params; // Obtiene el id del producto de los parámetros de navegación
+  const [descripcion, setDescripcion] = useState(""); // Estado para la descripción del producto
+  const [nombre, setNombre] = useState(""); // Estado para el nombre del producto
+  const [precio, setPrecio] = useState(""); // Estado para el precio del producto
+  const [cantidad, setCantidad] = useState(""); // Estado para la cantidad disponible del producto
+  const [dialogVisible, setDialogVisible] = useState(false); // Estado para controlar la visibilidad del diálogo de confirmación
+  const navigation = useNavigation(); // Hook de navegación de React Navigation
 
-
-  const [dialogVisible, setDialogVisible] = useState(false);
-
+  // Función para obtener los detalles del producto desde la API
   const getData = async () => {
     try {
       const form = new FormData();
       form.append("idProducto", idProducto);
-      const DATA = await fetchData("productos", "readOne", form);
+      const DATA = await fetchData("productos", "readOne", form); // Llama a la función fetchData para obtener los datos del producto
       if (DATA.status) {
-        const producto = DATA.dataset;
+        const producto = DATA.dataset; // Extrae los datos del producto del resultado
         setDescripcion(producto.descripcion_producto);
         setNombre(producto.Nombre_Producto);
         setPrecio(producto.precio_producto);
         setCantidad(producto.CantidadP);
       } else {
         console.log("Data en el ELSE error productos", DATA);
-        Alert.alert("Error productos", DATA.error);
+        Alert.alert("Error productos", DATA.error); // Muestra una alerta en caso de error
       }
     } catch (error) {
       console.error(error, "Error desde Catch");
@@ -39,15 +37,17 @@ const DetalleProducto = ({ route }) => {
     }
   };
 
+  // Efecto para cargar los datos del producto al cargar el componente
   useEffect(() => {
     getData();
   }, []);
 
+  // Función para mostrar el diálogo de confirmación al agregar al carrito
   const agregarCarrito = () => {
     setDialogVisible(true);
   };
 
-
+  // Función para ocultar el diálogo de confirmación
   const hideDialog = () => {
     setDialogVisible(false);
   };
@@ -60,7 +60,7 @@ const DetalleProducto = ({ route }) => {
           Nombre_Producto={nombre}
           precio_producto={precio}
           CantidadP={cantidad}
-          onAgregarCarrito={agregarCarrito}
+          onAgregarCarrito={agregarCarrito} // Propiedad para manejar el evento de agregar al carrito
         />
         <Portal>
           <Dialog visible={dialogVisible} onDismiss={hideDialog}>
@@ -78,6 +78,7 @@ const DetalleProducto = ({ route }) => {
   );
 };
 
+// Estilos para el componente DetalleProducto
 const styles = StyleSheet.create({
   container: {
     flex: 1,

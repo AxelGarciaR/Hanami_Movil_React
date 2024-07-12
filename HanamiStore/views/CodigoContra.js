@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Image, TextInput, ScrollView } from 'react-nati
 import ButtonAction from '../components/ButtonAction';
 
 const CodigoContra = ({ navigation }) => {
-    const [email, setEmail] = useState('');
+    const [email, setEmail] = useState(''); // Estado para almacenar el correo electrónico ingresado
 
     return (
         <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -18,7 +18,7 @@ const CodigoContra = ({ navigation }) => {
                 </Text>
                 <View style={styles.whiteContainer}>
                     <Image
-                        source={require('../assets/logodoshanami.png')} // Ruta de tu imagen
+                        source={require('../assets/logodoshanami.png')}
                         style={styles.imagedos}
                     />
                     <Text style={styles.instructionText}>¡Revisa tu correo!</Text>
@@ -56,7 +56,7 @@ const CodigoContra = ({ navigation }) => {
                     <ButtonAction
                         mode="contained"
                         onPress={() => {
-                            // Lógica para restablecer la contraseña
+                            // Lógica para verificar el código y proceder a la siguiente pantalla
                             navigation.navigate('NuevaContra');
                         }}
                         style={styles.actionButton}
@@ -69,6 +69,7 @@ const CodigoContra = ({ navigation }) => {
     );
 };
 
+// Estilos para el componente CodigoContra
 const styles = StyleSheet.create({
     scrollContainer: {
         flexGrow: 1,

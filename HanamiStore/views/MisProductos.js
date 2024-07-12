@@ -9,25 +9,31 @@ const MisProductos = ({ navigation }) => {
     { id: 2, nombre: 'Gel hidratante nivea', precio: 75.00, cantidad: 1, imagen: require('../assets/skincare.png') },
   ]);
 
+  // Función para incrementar la cantidad de un producto
   const incrementarCantidad = (id) => {
     setProductos(productos.map(producto => 
       producto.id === id ? { ...producto, cantidad: producto.cantidad + 1 } : producto
     ));
   };
 
+  // Función para disminuir la cantidad de un producto
   const disminuirCantidad = (id) => {
     setProductos(productos.map(producto => 
       producto.id === id && producto.cantidad > 1 ? { ...producto, cantidad: producto.cantidad - 1 } : producto
     ));
   };
 
+  // Calcular el total de la orden
   const totalOrden = productos.reduce((total, producto) => total + producto.precio * producto.cantidad, 0);
-  const descuento = 50.00; // Este puede ser calculado dinámicamente
-  const envio = 0.00; // Asumiendo envío gratis
+  
+  // Valores fijos para descuento y envío
+  const descuento = 50.00;
+  const envio = 0.00;
 
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.title}>Mis productos</Text>
+      
       <Button mode="text" onPress={() => navigation.navigate('Productos')}>
         + Agregar más
       </Button>
@@ -40,6 +46,8 @@ const MisProductos = ({ navigation }) => {
                 <Text>{producto.nombre}</Text>
                 <Text>bottle of 500 pellets</Text>
                 <Text>${producto.precio.toFixed(2)}</Text>
+                
+                
                 <View style={styles.quantityContainer}>
                   <IconButton icon="minus" onPress={() => disminuirCantidad(producto.id)} />
                   <Text>{producto.cantidad}</Text>
@@ -50,6 +58,8 @@ const MisProductos = ({ navigation }) => {
           </Card.Content>
         </Card>
       ))}
+      
+      
       <View style={styles.summaryContainer}>
         <Text style={styles.summaryText}>Resumen de pago</Text>
         <View style={styles.summaryRow}>
@@ -68,7 +78,9 @@ const MisProductos = ({ navigation }) => {
           <Text>Total</Text>
           <Text>${(totalOrden - descuento + envio).toFixed(2)}</Text>
         </View>
-        <ButtonAction icon="credit-card" onPress={() => { /* Función para proceder con el pago */ }}>
+        
+        
+        <ButtonAction icon="credit-card" onPress={() => {}}>
           Pagar
         </ButtonAction>
       </View>
