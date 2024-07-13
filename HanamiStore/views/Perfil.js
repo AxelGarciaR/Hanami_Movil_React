@@ -9,7 +9,9 @@ const Perfil = ({ navigation }) => {
   const [apellido, setApellido] = useState("");
   const [correo, setCorreo] = useState("");
   const [direccion, setDireccion] = useState("");
+  const [perfil, setPerfil] = useState("");
   const [clave, setClave] = useState(""); // Estado para la nueva clave
+  const [confirmarClave, setConfirmarClave] = useState(""); // Estado para la nueva clave
 
   // Función useEffect para cargar datos del perfil al inicio
   useEffect(() => {
@@ -26,6 +28,7 @@ const Perfil = ({ navigation }) => {
           setNombre(usuario.nombre_cliente || "");
           setApellido(usuario.apellido_cliente || "");
           setCorreo(usuario.CorreoE || "");
+          setPerfil(usuario.nombre_perfil || "");
           setDireccion(usuario.Direccion || "");
         } else {
           Alert.alert("Error", "Datos del usuario no disponibles");
@@ -44,15 +47,20 @@ const Perfil = ({ navigation }) => {
   const handlerEditarPerfil = async () => {
     try {
       const form = new FormData();
-      form.append("nombre_cliente", nombre);
-      form.append("apellido_cliente", apellido);
-      form.append("CorreoE", correo);
-      form.append("Direccion", direccion);
-      if (clave) {
-        form.append("Clave", clave); // Se agrega la clave solo si se ha ingresado nueva
-      }
+      form.append("nombreCliente", nombre);
+      form.append("apellidoCliente", apellido);
+      form.append("perfilCliente", perfil);
+      form.append("claveCliente", clave);
+      form.append("confirmarClave", confirmarClave);
+      form.append("correoCliente", correo);
+      form.append("direccionCliente", direccion);
 
-      const DATA = await fetchData("cliente", "editProfile", form); // Llamada a API para editar perfil
+      /* if (clave) {
+        form.append("Clave", clave); // Se agrega la clave solo si se ha ingresado nueva
+      }*/ 
+     
+
+      const DATA = await fetchData("cliente", "updateProfile", form); // Llamada a API para editar perfil
       if (DATA.status) {
         Alert.alert("Hecho!", DATA.message); // Alerta de éxito al editar perfil
       } else {
@@ -106,12 +114,26 @@ const Perfil = ({ navigation }) => {
         onChangeText={text => setCorreo(text)}
       />
       <TextInput
+        label="Nombre del perfil"
+        value={perfil}
+        style={styles.input}
+        onChangeText={text => setPerfil(text)}
+      />
+      <TextInput
         label="Clave"
         value={clave}
         secureTextEntry
         right={<TextInput.Icon name="pencil" />}
         style={styles.input}
         onChangeText={text => setClave(text)}
+      />
+      <TextInput
+        label="Confrmar clave"
+        value={confirmarClave}
+        secureTextEntry
+        right={<TextInput.Icon name="pencil" />}
+        style={styles.input}
+        onChangeText={text => setConfirmarClave(text)}
       />
       <TextInput
         label="Dirección"
