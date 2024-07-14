@@ -8,7 +8,7 @@ const MisProductos = ({ navigation }) => {
     { id: 1, nombre: 'Gel hidratante nivea', precio: 75.00, cantidad: 1, imagen: require('../assets/skincare.png') },
     { id: 2, nombre: 'Gel hidratante nivea', precio: 75.00, cantidad: 1, imagen: require('../assets/skincare.png') },
   ]);
-
+  
   // Función para incrementar la cantidad de un producto
   const incrementarCantidad = (id) => {
     setProductos(productos.map(producto => 

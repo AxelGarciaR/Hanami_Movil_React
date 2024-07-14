@@ -11,7 +11,8 @@ const DetalleProducto = ({ route }) => {
   const [descripcion, setDescripcion] = useState(""); // Estado para la descripción del producto
   const [nombre, setNombre] = useState(""); // Estado para el nombre del producto
   const [precio, setPrecio] = useState(""); // Estado para el precio del producto
-  const [cantidad, setCantidad] = useState(""); // Estado para la cantidad disponible del producto
+  const [cantidad, setCantidad] = useState("");
+  const [cantidadSoli, setCantidadSoli] = useState(""); // Estado para la cantidad disponible del producto
   const [dialogVisible, setDialogVisible] = useState(false); // Estado para controlar la visibilidad del diálogo de confirmación
   const navigation = useNavigation(); // Hook de navegación de React Navigation
 
@@ -37,6 +38,8 @@ const DetalleProducto = ({ route }) => {
     }
   };
 
+  
+
   // Efecto para cargar los datos del producto al cargar el componente
   useEffect(() => {
     getData();
@@ -60,8 +63,10 @@ const DetalleProducto = ({ route }) => {
           Nombre_Producto={nombre}
           precio_producto={precio}
           CantidadP={cantidad}
-          onAgregarCarrito={agregarCarrito} // Propiedad para manejar el evento de agregar al carrito
+          idProducto={idProducto}
         />
+        
+        
         <Portal>
           <Dialog visible={dialogVisible} onDismiss={hideDialog}>
             <Dialog.Title>Éxito</Dialog.Title>
