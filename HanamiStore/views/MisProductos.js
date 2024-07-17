@@ -2,30 +2,60 @@ import React, { useState } from 'react';
 import { View, ScrollView, StyleSheet, Image } from 'react-native';
 import { Text, Card, IconButton, Button } from 'react-native-paper';
 import ButtonAction from '../components/ButtonAction';
+import CarritoProductoCard from '../components/CarritoProductoCard';
 
 const MisProductos = ({ navigation }) => {
-  const [productos, setProductos] = useState([
-    { id: 1, nombre: 'Gel hidratante nivea', precio: 75.00, cantidad: 1, imagen: require('../assets/skincare.png') },
-    { id: 2, nombre: 'Gel hidratante nivea', precio: 75.00, cantidad: 1, imagen: require('../assets/skincare.png') },
-  ]);
-  
-  // Función para incrementar la cantidad de un producto
-  const incrementarCantidad = (id) => {
-    setProductos(productos.map(producto => 
-      producto.id === id ? { ...producto, cantidad: producto.cantidad + 1 } : producto
-    ));
+  const [dataProductos, setDataProductos] = useState([]); // Estado para almacenar los productos más recientes
+  const [refreshing, setRefreshing] = useState(false); // Estado para controlar el estado de refrescado de la lista
+
+  // Función para obtener productos desde la API
+  const getProductos = async () => {
+    try {
+      const DATA = await fetchData("detalle_ordenes", "readDetail"); // Llamada a la API para obtener todos los productos
+      if (DATA.status) {
+        setDataProductos(DATA.dataset); // Actualización del estado con los datos obtenidos
+      } else {
+        console.log("Error al seleccionar productos en carrito", DATA);
+        Alert.alert('Error productos', DATA.error); // Manejo de error en caso de falla en la API
+      }
+    } catch (error) {
+      console.error(error, "Error desde Catch");
+      Alert.alert('Error', 'Ocurrió un error al listar los productos'); // Alerta de error general
+    }
   };
 
-  // Función para disminuir la cantidad de un producto
-  const disminuirCantidad = (id) => {
-    setProductos(productos.map(producto => 
-      producto.id === id && producto.cantidad > 1 ? { ...producto, cantidad: producto.cantidad - 1 } : producto
-    ));
+  // Función para manejar la recarga de productos
+  const onRefresh = () => {
+    setRefreshing(true); // Activación del indicador de recarga
+    // Simulando una recarga de datos con tiempo de espera
+    setTimeout(() => {
+      getProductos(); // Llamada para obtener productos actualizados
+      setRefreshing(false); // Desactivación del indicador de recarga
+    }, 200); // Tiempo de espera para la recarga
   };
+
+  // Efecto para cargar los productos más recientes al cargar el componente
+  useEffect(() => {
+    getProductos();
+  }, []);
+
+
+
+  const { idProducto } = route.params; // Obtiene el id del producto de los parámetros de navegación
+  const [descripcion, setDescripcion] = useState(""); // Estado para la descripción del producto
+  const [nombre, setNombre] = useState(""); // Estado para el nombre del producto
+  const [precio, setPrecio] = useState(""); // Estado para el precio del producto
+  const [cantidad, setCantidad] = useState("");
+  const [cantidadSoli, setCantidadSoli] = useState(""); // Estado para la cantidad disponible del producto
+  const [dialogVisible, setDialogVisible] = useState(false); // Estado para controlar la visibilidad del diálogo de confirmación
+  const navigation = useNavigation(); // Hook de navegación de React Navigation
+
+
+
 
   // Calcular el total de la orden
   const totalOrden = productos.reduce((total, producto) => total + producto.precio * producto.cantidad, 0);
-  
+
   // Valores fijos para descuento y envío
   const descuento = 50.00;
   const envio = 0.00;
@@ -33,33 +63,30 @@ const MisProductos = ({ navigation }) => {
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.title}>Mis productos</Text>
-      
+
       <Button mode="text" onPress={() => navigation.navigate('Productos')}>
         + Agregar más
       </Button>
-      {productos.map(producto => (
-        <Card key={producto.id} style={styles.card}>
-          <Card.Content>
-            <View style={styles.cardContent}>
-              <Image source={producto.imagen} style={styles.productImage} />
-              <View style={styles.productInfo}>
-                <Text>{producto.nombre}</Text>
-                <Text>bottle of 500 pellets</Text>
-                <Text>${producto.precio.toFixed(2)}</Text>
-                
-                
-                <View style={styles.quantityContainer}>
-                  <IconButton icon="minus" onPress={() => disminuirCantidad(producto.id)} />
-                  <Text>{producto.cantidad}</Text>
-                  <IconButton icon="plus" onPress={() => incrementarCantidad(producto.id)} />
-                </View>
-              </View>
-            </View>
-          </Card.Content>
-        </Card>
-      ))}
-      
-      
+
+      <FlatList
+        style={styles.flatlist}
+        data={dataProductos}
+        keyExtractor={(item) => item.id_Producto.toString()}
+        numColumns={2}
+        columnWrapperStyle={styles.flatlistColumnWrapper}
+        renderItem={({ item }) => (
+          <CarritoProductoCard
+            idProducto={item.id_Producto}
+            nombre_producto={item.Nombre_Producto}
+            precio_producto={item.precio_producto}
+          />
+        )}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} /> // Componente de control de refresco
+        }
+      />
+
+
       <View style={styles.summaryContainer}>
         <Text style={styles.summaryText}>Resumen de pago</Text>
         <View style={styles.summaryRow}>
@@ -78,9 +105,9 @@ const MisProductos = ({ navigation }) => {
           <Text>Total</Text>
           <Text>${(totalOrden - descuento + envio).toFixed(2)}</Text>
         </View>
-        
-        
-        <ButtonAction icon="credit-card" onPress={() => {}}>
+
+
+        <ButtonAction icon="credit-card" onPress={() => { }}>
           Pagar
         </ButtonAction>
       </View>
@@ -100,12 +127,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 16,
   },
-  card: {
-    marginBottom: 16,
-  },
-  cardContent: {
-    flexDirection: 'row',
-  },
+
   productImage: {
     width: 50,
     height: 50,
