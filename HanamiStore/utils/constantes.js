@@ -3,5 +3,5 @@
 //Ip de la maquina local 
 //utilizar la direccion IP del servidor y no localhost
 //Insertar la ip que se muestra en el cmd de la pc en uso
-export const IP = 'http://192.168.2.110';
+export const IP = 'http://192.168.2.113';
 

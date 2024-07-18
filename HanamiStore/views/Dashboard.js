@@ -46,38 +46,36 @@ const Dashboard = ({ navigation }) => {
         <Text style={styles.welcomeText}>¡Bienvenido/a!</Text>
         <Text style={styles.nameText}>{route.params?.nombrePerfil}</Text>
       </View>
-      
+
       <TextInput
         placeholder="Buscar productos"
         left={<TextInput.Icon name="card-search-outline" />}
         style={styles.searchInput}
       />
-      
+
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Productos más recientes</Text>
       </View>
-      
+
       <View style={styles.productContainer}>
-        <Card style={styles.productCard}>
-          <FlatList
-            style={styles.flatlist}
-            data={dataNewProducts}
-            keyExtractor={(item) => item.id_Producto.toString()}
-            numColumns={2}
-            columnWrapperStyle={styles.flatlistColumnWrapper}
-            renderItem={({ item }) => (
-              <ProductoCard
-                Nombre_Producto={item.Nombre_Producto}
-                precio_producto={item.precio_producto}
-                navigation={navigation}
-                idProducto={item.id_Producto}
-              />
-            )}
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} /> // Componente de control de refresco
-            }
-          />
-        </Card>
+        <FlatList
+          style={styles.flatlist}
+          data={dataNewProducts}
+          keyExtractor={(item) => item.id_Producto.toString()}
+          numColumns={2}
+          columnWrapperStyle={styles.flatlistColumnWrapper}
+          renderItem={({ item }) => (
+            <ProductoCard
+              Nombre_Producto={item.Nombre_Producto}
+              precio_producto={item.precio_producto}
+              navigation={navigation}
+              idProducto={item.id_Producto}
+            />
+          )}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} /> // Componente de control de refresco
+          }
+        />
       </View>
     </ScrollView>
   );

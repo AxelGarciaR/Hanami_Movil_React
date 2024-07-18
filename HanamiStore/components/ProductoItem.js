@@ -1,10 +1,22 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput } from 'react-native';
-import { Card, Button, Paragraph } from 'react-native-paper';
+import { Card, Button, Paragraph, Portal, Dialog } from 'react-native-paper';
 import fetchData from "../utils/fechdata";
 import ButtonAction from './ButtonAction'; // Ajusta la ruta según sea necesario
 
-const ProductoItem = ({ descripcion_producto, Nombre_Producto, precio_producto, CantidadP,  idProducto }) => {
+const ProductoItem = ({ descripcion_producto, Nombre_Producto, precio_producto, CantidadP, idProducto }) => {
+
+  const [dialogVisible, setDialogVisible] = useState(false); // Estado para controlar la visibilidad del diálogo de confirmación
+
+  // Función para ocultar el diálogo de confirmación
+  const hideDialog = () => {
+    setDialogVisible(false);
+  };
+
+  // Función para mostrar el diálogo de confirmación al agregar al carrito
+  const agregarCarrito = () => {
+    setDialogVisible(true);
+  };
 
   const [cantidadSoli, setCantidadSoli] = useState(""); // Estado para la cantidad disponible del producto
 
@@ -16,6 +28,7 @@ const ProductoItem = ({ descripcion_producto, Nombre_Producto, precio_producto, 
       const data = await fetchData('detalle_ordenes', 'createDetail', FORM);
       if (data.status) {
         Alert.alert("Agregado al carrito con éxito");
+        agregarCarrito();
         navigation.navigate(Carrito); // Navegamos a la pantalla del carrito
       } else {
         Alert.alert("Error al agregar productos al carrito");
@@ -66,6 +79,19 @@ const ProductoItem = ({ descripcion_producto, Nombre_Producto, precio_producto, 
           Añadir al carrito
         </Button>
       </Card.Actions>
+
+      <Portal>
+        <Dialog visible={dialogVisible} onDismiss={hideDialog}>
+          <Dialog.Title>Éxito</Dialog.Title>
+          <Dialog.Content>
+            <Paragraph>¡Agregado al carrito correctamente!</Paragraph>
+          </Dialog.Content>
+          <Dialog.Actions>
+            <ButtonAction onPress={hideDialog}>OK</ButtonAction>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
+
     </Card>
   );
 };

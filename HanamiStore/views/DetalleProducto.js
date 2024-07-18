@@ -13,7 +13,7 @@ const DetalleProducto = ({ route }) => {
   const [precio, setPrecio] = useState(""); // Estado para el precio del producto
   const [cantidad, setCantidad] = useState("");
   const [cantidadSoli, setCantidadSoli] = useState(""); // Estado para la cantidad disponible del producto
-  const [dialogVisible, setDialogVisible] = useState(false); // Estado para controlar la visibilidad del diálogo de confirmación
+  
   const navigation = useNavigation(); // Hook de navegación de React Navigation
 
   // Función para obtener los detalles del producto desde la API
@@ -38,22 +38,14 @@ const DetalleProducto = ({ route }) => {
     }
   };
 
-  
-
   // Efecto para cargar los datos del producto al cargar el componente
   useEffect(() => {
     getData();
   }, []);
 
-  // Función para mostrar el diálogo de confirmación al agregar al carrito
-  const agregarCarrito = () => {
-    setDialogVisible(true);
-  };
+  
 
-  // Función para ocultar el diálogo de confirmación
-  const hideDialog = () => {
-    setDialogVisible(false);
-  };
+  
 
   return (
     <Provider>
@@ -66,18 +58,7 @@ const DetalleProducto = ({ route }) => {
           idProducto={idProducto}
         />
         
-        
-        <Portal>
-          <Dialog visible={dialogVisible} onDismiss={hideDialog}>
-            <Dialog.Title>Éxito</Dialog.Title>
-            <Dialog.Content>
-              <Paragraph>¡Agregado al carrito correctamente!</Paragraph>
-            </Dialog.Content>
-            <Dialog.Actions>
-              <ButtonAction onPress={hideDialog}>OK</ButtonAction>
-            </Dialog.Actions>
-          </Dialog>
-        </Portal>
+      
       </View>
     </Provider>
   );
