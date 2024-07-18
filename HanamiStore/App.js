@@ -40,7 +40,7 @@ function DrawerNavigator() {
 // Función para el navegador raíz (root navigator)
 function RootNavigator() {
   return (
-    <Stack.Navigator initialRouteName="MisProductos">
+    <Stack.Navigator initialRouteName="Dashboard">
       <Stack.Screen name="Inicio" component={Inicio} options={{ headerShown: false }} />
       <Stack.Screen name="Cuenta" component={Cuenta} options={{ headerShown: false }} />
       <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />

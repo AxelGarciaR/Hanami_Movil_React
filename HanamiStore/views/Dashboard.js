@@ -41,7 +41,7 @@ const Dashboard = ({ navigation }) => {
   }, []);
 
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.welcomeText}>¡Bienvenido/a!</Text>
         <Text style={styles.nameText}>{route.params?.nombrePerfil}</Text>
@@ -77,7 +77,7 @@ const Dashboard = ({ navigation }) => {
           }
         />
       </View>
-    </ScrollView>
+    </View>
   );
 };
 
