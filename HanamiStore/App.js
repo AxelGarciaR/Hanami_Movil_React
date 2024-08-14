@@ -14,7 +14,7 @@ import Recuperacion from './views/Recuperacion';
 import NuevaContra from './views/NuevaContra';
 import CodigoContra from './views/CodigoContra';
 import Dashboard from './views/Dashboard';
-import Carrito from './views/Carrito';
+import Carrito from './views/Historia';
 import Productos from './views/Productos';
 import Perfil from './views/Perfil';
 import MisProductos from './views/MisProductos';

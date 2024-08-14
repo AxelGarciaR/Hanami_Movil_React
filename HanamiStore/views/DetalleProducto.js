@@ -43,10 +43,6 @@ const DetalleProducto = ({ route }) => {
     getData();
   }, []);
 
-  
-
-  
-
   return (
     <Provider>
       <View style={styles.container}>
@@ -56,8 +52,8 @@ const DetalleProducto = ({ route }) => {
           precio_producto={precio}
           CantidadP={cantidad}
           idProducto={idProducto}
+          navigation={navigation}
         />
-        
       
       </View>
     </Provider>
