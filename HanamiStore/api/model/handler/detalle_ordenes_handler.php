@@ -106,7 +106,7 @@ class DetalleOrdenHandler
                 FROM detalleOrdenes
                 INNER JOIN ordenes USING(id_Orden)
                 INNER JOIN productos USING(id_Producto)
-                WHERE id_Cliente = ? AND Estado_Orden = ?';
+                WHERE id_Cliente = ? AND Estado_Orden = ? ORDER BY Fecha_Orden DESC;';
         $params = array($_SESSION['idCliente'], $this->estado);
         return Database::getRows($sql, $params);
     }
@@ -120,6 +120,7 @@ class DetalleOrdenHandler
         $params = array($this->comentario, $this->puntuacion, $this->idDetalle);
         return Database::executeRow($sql, $params);
     }
+
 
 
     // Método para finalizar un pedido por parte del cliente.
