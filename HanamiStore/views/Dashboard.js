@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { View, ScrollView, StyleSheet, Text, Alert, FlatList, RefreshControl } from 'react-native';
+import { View, ScrollView, StyleSheet, Text, Alert, FlatList, RefreshControl,  } from 'react-native';
+import { Appbar } from 'react-native-paper';
 import { TextInput, Card } from 'react-native-paper';
 import fetchData from "../utils/fechdata";
 import ProductoCard from '../components/ProductoCard';
@@ -41,41 +42,48 @@ const Dashboard = ({ navigation }) => {
   }, []);
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.welcomeText}>¡Bienvenido/a!</Text>
-        <Text style={styles.nameText}>{route.params?.nombrePerfil}</Text>
-      </View>
+    <View style={{ flex: 1 }}>
+      <Appbar.Header>
+        <Appbar.Action icon="menu" onPress={() => navigation.openDrawer()} />
+        <Appbar.Content title="Dashboard" />
+      </Appbar.Header>
 
-      <TextInput
-        placeholder="Buscar productos"
-        left={<TextInput.Icon name="card-search-outline" />}
-        style={styles.searchInput}
-      />
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.welcomeText}>¡Bienvenido/a!</Text>
+          <Text style={styles.nameText}>{route.params?.nombrePerfil}</Text>
+        </View>
 
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Productos más recientes</Text>
-      </View>
-
-      <View style={styles.productContainer}>
-        <FlatList
-          style={styles.flatlist}
-          data={dataNewProducts}
-          keyExtractor={(item) => item.id_Producto.toString()}
-          numColumns={2}
-          columnWrapperStyle={styles.flatlistColumnWrapper}
-          renderItem={({ item }) => (
-            <ProductoCard
-              Nombre_Producto={item.Nombre_Producto}
-              precio_producto={item.precio_producto}
-              navigation={navigation}
-              idProducto={item.id_Producto}
-            />
-          )}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} /> // Componente de control de refresco
-          }
+        <TextInput
+          placeholder="Buscar productos"
+          left={<TextInput.Icon name="card-search-outline" />}
+          style={styles.searchInput}
         />
+
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Productos más recientes</Text>
+        </View>
+
+        <View style={styles.productContainer}>
+          <FlatList
+            style={styles.flatlist}
+            data={dataNewProducts}
+            keyExtractor={(item) => item.id_Producto.toString()}
+            numColumns={2}
+            columnWrapperStyle={styles.flatlistColumnWrapper}
+            renderItem={({ item }) => (
+              <ProductoCard
+                Nombre_Producto={item.Nombre_Producto}
+                precio_producto={item.precio_producto}
+                navigation={navigation}
+                idProducto={item.id_Producto}
+              />
+            )}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} /> // Componente de control de refresco
+            }
+          />
+        </View>
       </View>
     </View>
   );
@@ -88,6 +96,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
     paddingHorizontal: 20,
     marginTop: 20,
+    paddingBottom: 200, // Padding adicional en la parte inferior
   },
   header: {
     marginTop: 20,

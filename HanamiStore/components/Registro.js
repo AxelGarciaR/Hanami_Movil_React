@@ -163,9 +163,6 @@ const RegisterScreen = ({ navigation }) => {
                     >
                         Crear
                     </ButtonAction>
-                    <TouchableOpacity onPress={() => navigation.navigate('Cuenta')}>
-                        <Text style={styles.linkText}>¿Ya tienes cuenta? Iniciar sesión</Text>
-                    </TouchableOpacity>
                 </View>
             </ScrollView>
 

@@ -64,7 +64,22 @@ const LoginScreen = ({ navigation }) => {
             Alert.alert("Error", "Ocurrió un error al iniciar sesión");
         }
     };
-    
+
+    // Función para manejar el cierre de sesión
+    const handleLogout = async () => {
+        try {
+            const DATA = await fetchData("cliente", "logOut");
+            if (DATA.status) {
+                Alert.alert("Sesión cerrada", "Has cerrado sesión exitosamente.");
+                navigation.replace("Login"); // Redirige a la pantalla de inicio de sesión
+            } else {
+                Alert.alert("Error", "Ocurrió un error al cerrar sesión");
+            }
+        } catch (error) {
+            console.error(error);
+            Alert.alert("Error", "Ocurrió un error al cerrar sesión");
+        }
+    };
 
     // Validación de formato de correo electrónico
     const validateEmail = (email) => {
@@ -114,6 +129,11 @@ const LoginScreen = ({ navigation }) => {
 
                 <TouchableOpacity onPress={() => navigation.navigate('Recuperacion')}>
                     <Text style={styles.linkText}>¿Olvidaste tu contraseña?</Text>
+                </TouchableOpacity>
+
+                {/* Botón de Cerrar sesión */}
+                <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+                    <Text style={styles.logoutText}>Cerrar sesión</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -168,6 +188,16 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#ccc',
         justifyContent: 'space-between',
+    },
+    logoutButton: {
+        backgroundColor: '#FF8BA7',
+        marginTop: 10,
+        padding: 12,
+        alignItems: 'center',
+    },
+    logoutText: {
+        color: '#fff',
+        textAlign: 'center',
     },
 });
 

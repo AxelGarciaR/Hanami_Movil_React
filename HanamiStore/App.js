@@ -2,7 +2,7 @@ import 'react-native-gesture-handler';
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
 import { Provider as PaperProvider } from 'react-native-paper';
 
 // Importación de componentes y vistas
@@ -24,15 +24,39 @@ import DetalleProducto from './views/DetalleProducto';
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 
+// Contenido personalizado del drawer
+function CustomDrawerContent(props) {
+  return (
+    <DrawerContentScrollView {...props}>
+      <DrawerItemList {...props} />
+      <DrawerItem
+        label="Inicio"
+        onPress={() => props.navigation.navigate('Dashboard')}
+      />
+      <DrawerItem
+        label="Productos"
+        onPress={() => props.navigation.navigate('Productos')}
+      />
+      <DrawerItem
+        label="Historia"
+        onPress={() => props.navigation.navigate('Historia')}
+      />
+      <DrawerItem
+        label="Perfil"
+        onPress={() => props.navigation.navigate('Perfil')}
+      />
+    </DrawerContentScrollView>
+  );
+}
+
 // Función para el navegador de cajón (drawer navigator)
 function DrawerNavigator() {
   return (
-    <Drawer.Navigator initialRouteName="SkinCare">
-      {/* Definición de las pantallas del drawer navigator */}
-      <Drawer.Screen name="SkinCare" component={Productos} />
-      <Drawer.Screen name="Salud y Belleza" component={Productos} />
-      <Drawer.Screen name="Accesorios de Belleza" component={Productos} />
-      <Drawer.Screen name="Escencias" component={Productos} />
+    <Drawer.Navigator drawerContent={(props) => <CustomDrawerContent {...props} />}>
+      <Drawer.Screen name="Dashboard" component={Dashboard} />
+      <Drawer.Screen name="Productos" component={Productos} />
+      <Drawer.Screen name="Historia" component={Carrito} />
+      <Drawer.Screen name="Perfil" component={Perfil} />
     </Drawer.Navigator>
   );
 }
@@ -40,7 +64,7 @@ function DrawerNavigator() {
 // Función para el navegador raíz (root navigator)
 function RootNavigator() {
   return (
-    <Stack.Navigator initialRouteName="Dashboard">
+    <Stack.Navigator initialRouteName="Inicio">
       <Stack.Screen name="Inicio" component={Inicio} options={{ headerShown: false }} />
       <Stack.Screen name="Cuenta" component={Cuenta} options={{ headerShown: false }} />
       <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
