@@ -72,11 +72,8 @@ function RootNavigator() {
       <Stack.Screen name="Recuperacion" component={Recuperacion} options={{ headerShown: false }} />
       <Stack.Screen name="NuevaContra" component={NuevaContra} options={{ headerShown: false }} />
       <Stack.Screen name="CodigoContra" component={CodigoContra} options={{ headerShown: false }} />
-      <Stack.Screen name="Dashboard" component={Dashboard} options={{ headerShown: false }} />
-      <Stack.Screen name="Carrito" component={Carrito} options={{ headerShown: false }} />
-      <Stack.Screen name="Productos" component={DrawerNavigator} options={{ headerShown: false }} />
+      <Stack.Screen name="Drawer" component={DrawerNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="MisProductos" component={MisProductos} options={{ headerShown: false }} />
-      <Stack.Screen name="Perfil" component={Perfil} options={{ headerShown: false }} />
       <Stack.Screen name="DetalleProducto" component={DetalleProducto} options={{ headerShown: false }} />
     </Stack.Navigator>
   );

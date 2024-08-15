@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { View, ScrollView, StyleSheet, Text, Alert, FlatList, RefreshControl,  } from 'react-native';
-import { Appbar } from 'react-native-paper';
-import { TextInput, Card } from 'react-native-paper';
+import { View, ScrollView, StyleSheet, Text, Alert, FlatList, RefreshControl } from 'react-native';
+import { Appbar, TextInput } from 'react-native-paper';
+import { DrawerActions } from '@react-navigation/drawer';
 import fetchData from "../utils/fechdata";
 import ProductoCard from '../components/ProductoCard';
-import { useRoute } from '@react-navigation/native';
+import { useRoute, useNavigation } from '@react-navigation/native';
 
-const Dashboard = ({ navigation }) => {
+const Dashboard = () => {
+  const navigation = useNavigation();
   const route = useRoute();
-  const [dataNewProducts, setDataNewProducts] = useState([]); // Estado para almacenar los productos más recientes
-  const [refreshing, setRefreshing] = useState(false); // Estado para controlar el estado de refrescado de la lista
+  const [dataNewProducts, setDataNewProducts] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
 
-  // Función para obtener los productos más recientes desde la API
   const getNewProducts = async () => {
     try {
       const DATA = await fetchData("productos", "newProduct");
       if (DATA.status) {
-        setDataNewProducts(DATA.dataset); // Actualiza el estado con los datos de los productos
+        setDataNewProducts(DATA.dataset);
       } else {
         console.log("Data en el ELSE error productos", DATA);
         Alert.alert("Error productos", DATA.error);
@@ -27,16 +27,18 @@ const Dashboard = ({ navigation }) => {
     }
   };
 
-  // Función para manejar el evento de refrescar la lista de productos
   const onRefresh = () => {
-    setRefreshing(true); // Activa el indicador de refrescado
+    setRefreshing(true);
     setTimeout(() => {
-      getNewProducts(); // Llama a la función para obtener los productos más recientes
-      setRefreshing(false); // Desactiva el indicador de refrescado después de 200ms
+      getNewProducts();
+      setRefreshing(false);
     }, 200);
   };
 
-  // Efecto para cargar los productos más recientes al cargar el componente
+  const openDrawer = () => {
+    navigation.dispatch(DrawerActions.openDrawer()); // Asegúrate de importar DrawerActions
+  };
+
   useEffect(() => {
     getNewProducts();
   }, []);
@@ -44,7 +46,7 @@ const Dashboard = ({ navigation }) => {
   return (
     <View style={{ flex: 1 }}>
       <Appbar.Header>
-        <Appbar.Action icon="menu" onPress={() => navigation.openDrawer()} />
+        <Appbar.Action icon="menu" onPress={openDrawer} />
         <Appbar.Content title="Dashboard" />
       </Appbar.Header>
 
@@ -80,7 +82,7 @@ const Dashboard = ({ navigation }) => {
               />
             )}
             refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} /> // Componente de control de refresco
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }
           />
         </View>
@@ -88,6 +90,7 @@ const Dashboard = ({ navigation }) => {
     </View>
   );
 };
+
 
 // Estilos para el componente Dashboard
 const styles = StyleSheet.create({
