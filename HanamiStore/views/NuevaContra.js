@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, TextInput, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Image, TextInput, ScrollView, Alert } from 'react-native';
 import { IconButton, Portal, Dialog } from 'react-native-paper';
 import ButtonAction from '../components/ButtonAction';
 import fetchData from "../utils/fechdata";
 
-const NuevaContra = ({ navigation }) => {
+const NuevaContra = ({ navigation, route }) => {
+    const { email } = route.params; // Desestructurar el correo electrónico
+
     const [pass, setPass] = useState('');
     const [newPass, setNewPass] = useState('');
     const [showPassword, setShowPassword] = useState(false);
@@ -14,22 +16,21 @@ const NuevaContra = ({ navigation }) => {
 
     const handleCambiarContra = async () => {
         try {
-          const FORM = new FormData();
-          FORM.append("user_contra", pass);
-          FORM.append("user_correo", cantidadSoli); // Cantidad fija por ahora
-          const data = await fetchData('detalle_ordenes', 'createDetail', FORM);
-          if (data.status) {
-            Alert.alert("Agregado al carrito con éxito");
-            agregarCarrito();
-            navigation.navigate('MisProductos'); // Navegamos a la pantalla del carrito
-          } else {
-            Alert.alert("Error al agregar productos al carrito");
-          }
+            const FORM = new FormData();
+            FORM.append("user_contra", pass);
+            FORM.append("user_correo", email); // Cantidad fija por ahora
+            const data = await fetchData('cliente', 'updatePassword', FORM);
+            if (data.status) {
+                Alert.alert("Contraseña cambiada correctamente");
+                navigation.navigate('Cuenta'); // Navegamos a la pantalla del login
+            } else {
+                Alert.alert("Error al cambiar la contraseña");
+            }
         } catch (error) {
-          Alert.alert("Error al ejecutar la petición: " + error);
+            Alert.alert("Error al ejecutar la petición: " + error);
         }
-      };
-    
+    };
+
 
     // Función para alternar la visibilidad de la contraseña
     const togglePasswordVisibility = () => {
@@ -93,7 +94,7 @@ const NuevaContra = ({ navigation }) => {
                     </View>
                     <ButtonAction
                         mode="contained"
-                        onPress={handlePasswordReset}
+                        onPress={handleCambiarContra}
                         style={styles.actionButton}
                     >
                         Restablecer contraseña

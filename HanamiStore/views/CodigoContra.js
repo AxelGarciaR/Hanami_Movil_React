@@ -4,7 +4,8 @@ import ButtonAction from '../components/ButtonAction';
 import fetchData from "../utils/fechdata";
 
 const CodigoContra = ({ navigation, route }) => {
-    const { codigo } = route.params; // Recibe el código pasado desde la pantalla anterior
+    const { codigo, email } = route.params; // Recibe el código y el correo electrónico
+
     const [codigoIngresado, setCodigoIngresado] = useState('');
 
     return (
@@ -15,9 +16,7 @@ const CodigoContra = ({ navigation, route }) => {
                     style={styles.image}
                     resizeMode="cover"
                 />
-                <Text style={styles.text}>
-                    Recuperación
-                </Text>
+                <Text style={styles.text}>Recuperación</Text>
                 <View style={styles.whiteContainer}>
                     <Image
                         source={require('../assets/logodoshanami.png')}
@@ -62,9 +61,8 @@ const CodigoContra = ({ navigation, route }) => {
                     <ButtonAction
                         mode="contained"
                         onPress={() => {
-                            // Compara el código ingresado con el código recibido
                             if (codigoIngresado === codigo) {
-                                navigation.navigate('NuevaContra');
+                                navigation.navigate('NuevaContra', { email }); // Pasar el email a NuevaContra
                             } else {
                                 Alert.alert('Error', 'El código ingresado no es correcto');
                             }
