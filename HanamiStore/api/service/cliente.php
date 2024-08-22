@@ -1,6 +1,7 @@
 <?php
 // Se incluye la clase del modelo.
 require_once('../model/data/cliente_data.php');
+require_once('./mandar_correo.php');
 
 // Se comprueba si existe una acción a realizar, de lo contrario se finaliza el script con un mensaje de error.
 if (isset($_GET['action'])) {
@@ -8,6 +9,7 @@ if (isset($_GET['action'])) {
     session_start();
     // Se instancia la clase correspondiente.
     $cliente = new ClienteData;
+    $mandarCorreo = new mandarCorreo;
     // Se declara e inicializa un arreglo para guardar el resultado que retorna la API.
     $result = array('status' => 0, 'session' => 0, 'recaptcha' => 0, 'message' => null, 'error' => null, 'exception' => null, 'username' => null);
     // Se verifica si existe una sesión iniciada como cliente para realizar las acciones correspondientes.
@@ -33,7 +35,7 @@ if (isset($_GET['action'])) {
                 break;
             case 'updateProfile':
                 $_POST = Validator::validateForm($_POST);
-                if(
+                if (
                     !$cliente->setId($_SESSION['idCliente']) or
                     !$cliente->setNombre($_POST['nombreCliente']) or
                     !$cliente->setApellido($_POST['apellidoCliente']) or
@@ -69,7 +71,7 @@ if (isset($_GET['action'])) {
         switch ($_GET['action']) {
             case 'signUp':
                 $_POST = Validator::validateForm($_POST);
-                if(
+                if (
                     !$cliente->setNombre($_POST['nombreCliente']) or
                     !$cliente->setApellido($_POST['apellidoCliente']) or
                     !$cliente->setNombrePerfil($_POST['perfilCliente']) or
@@ -98,6 +100,50 @@ if (isset($_GET['action'])) {
                     $result['error'] = 'La cuenta ha sido desactivada';
                 }
                 break;
+            case 'checkCorreo':
+                $_POST = Validator::validateForm($_POST);
+                if (!$cliente->setCorreo($_POST['user_correo'])) {
+                    $result['error'] = 'Correo electrónico incorrecto';
+                } elseif ($result['dataset'] = $cliente->checkCorreo()) {
+                    $result['status'] = 1;
+                } else {
+                    $result['error'] = 'Correo electrónico inexistente';
+                }
+                break;
+                //ENVIAR CODIGO 
+            case 'enviarCodigoRecuperacion':
+                // Generar un código de recuperación
+                $codigoRecuperacion = $mandarCorreo->generarCodigoRecuperacion();
+
+                // Preparar el cuerpo del correo electrónico
+                $correoDestino = $_POST['user_correo'];
+                $asunto = 'Código de recuperación';
+                // Enviar el correo electrónico y verificar si hubo algún error
+                $envioExitoso = $mandarCorreo->enviarCorreoPassword($correoDestino, $asunto, $codigoRecuperacion);
+
+                if ($envioExitoso === true) {
+                    $result['status'] = 1;
+                    $result['codigo'] = $codigoRecuperacion;
+                    $result['message'] = 'Código de recuperación enviado correctamente';
+                } else {
+                    $result['status'] = 0;
+                    $result['error'] = 'Error al enviar el correo: ' . $envioExitoso;
+                }
+                break;
+            case 'updatePassword':
+                $_POST = Validator::validateForm($_POST);
+                if (
+                    !$cliente->setClave($_POST['user_contra']) or
+                    !$cliente->setCorreo($_POST['user_correo'])
+                ) {
+                    $result['error'] = $cliente->getDataError();
+                } elseif ($cliente->updatePassword()) {
+                    $result['status'] = 1;
+                    $result['message'] = 'Se ha actualizado correctamente la contraseña';
+                } else {
+                    $result['error'] = 'Ocurrió un problema al modificar la contraseña';
+                }
+                break;
             default:
                 $result['error'] = 'Acción no disponible fuera de la sesión';
         }
@@ -111,4 +157,3 @@ if (isset($_GET['action'])) {
 } else {
     print(json_encode('Recurso no disponible'));
 }
-?>

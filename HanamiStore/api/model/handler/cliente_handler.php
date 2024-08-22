@@ -100,6 +100,27 @@ class ClienteHandler
         return Database::executeRow($sql, $params);
     }
 
+    public function checkCorreo()
+    {
+        $sql = 'SELECT id_cliente, CorreoE
+                FROM clientes
+                WHERE CorreoE = ?'; // Consulta SQL para verificar correo existente
+        $params = array($this->correoE); // Parámetros para la consulta SQL
+        return Database::getRow($sql, $params); // Ejecución de la consulta SQL
+    }
+
+    public function updatePassword()
+    {
+        $sql = 'UPDATE clientes
+        SET clave = ?
+        WHERE id_cliente = (
+            SELECT id_cliente
+            FROM clientes
+            WHERE CorreoE = ?);'; // Consulta SQL para verificar un usuario con ese correo
+        $params = array($this->clave, $this->correoE); // Parámetros para la consulta SQL
+        return Database::executeRow($sql, $params); // Ejecución de la consulta SQL
+    }
+
     public function readAll()
     {
         $sql = 'SELECT id_cliente, nombre_cliente, apellido_cliente, nombre_perfil, CorreoE, Direccion, estado

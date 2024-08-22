@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, TextInput, ScrollView } from 'react-native';
 import { IconButton, Portal, Dialog } from 'react-native-paper';
 import ButtonAction from '../components/ButtonAction';
+import fetchData from "../utils/fechdata";
 
 const NuevaContra = ({ navigation }) => {
     const [pass, setPass] = useState('');
@@ -10,6 +11,25 @@ const NuevaContra = ({ navigation }) => {
     const [cambiodeContraExitoso, setCambioDeContraExitoso] = useState(false);
     const [passwordsMismatch, setPasswordsMismatch] = useState(false);
     const [emptyFields, setEmptyFields] = useState(false);
+
+    const handleCambiarContra = async () => {
+        try {
+          const FORM = new FormData();
+          FORM.append("user_contra", pass);
+          FORM.append("user_correo", cantidadSoli); // Cantidad fija por ahora
+          const data = await fetchData('detalle_ordenes', 'createDetail', FORM);
+          if (data.status) {
+            Alert.alert("Agregado al carrito con éxito");
+            agregarCarrito();
+            navigation.navigate('MisProductos'); // Navegamos a la pantalla del carrito
+          } else {
+            Alert.alert("Error al agregar productos al carrito");
+          }
+        } catch (error) {
+          Alert.alert("Error al ejecutar la petición: " + error);
+        }
+      };
+    
 
     // Función para alternar la visibilidad de la contraseña
     const togglePasswordVisibility = () => {
@@ -59,23 +79,9 @@ const NuevaContra = ({ navigation }) => {
                     />
                     <View style={styles.inputContainer}>
                         <TextInput
-                            placeholder='Contraseña'
+                            placeholder='Nueva Contraseña'
                             value={pass}
                             onChangeText={setPass}
-                            style={styles.input}
-                            secureTextEntry={!showPassword}
-                        />
-                        <IconButton
-                            icon={showPassword ? 'eye-off' : 'eye'}
-                            onPress={togglePasswordVisibility}
-                            color='#757575'
-                        />
-                    </View>
-                    <View style={styles.inputContainer}>
-                        <TextInput
-                            placeholder='Nueva contraseña'
-                            value={newPass}
-                            onChangeText={setNewPass}
                             style={styles.input}
                             secureTextEntry={!showPassword}
                         />

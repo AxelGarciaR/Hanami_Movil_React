@@ -1,12 +1,48 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, TextInput, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Image, TextInput, ScrollView, Alert } from 'react-native';
 import { IconButton, Portal, Dialog } from 'react-native-paper';
+import fetchData from "../utils/fechdata";
 import ButtonAction from '../components/ButtonAction'; // Componente personalizado de botón
 import CustomAlert from 'react-native-dialog'; // Importación de componente de alerta personalizado (no utilizado en el código actual)
 
 const Recuperacion = ({ navigation }) => {
     const [email, setEmail] = useState(''); // Estado para almacenar el correo electrónico ingresado
+    const [sendCorreo, setCodeSend] = useState(''); // Estado para almacenar el correo electrónico ingresado
     const [showAlert, setShowAlert] = useState(false); // Estado para controlar la visibilidad de la alerta
+
+    const mandarCodigo = async () => {
+        const formData = new FormData();
+        formData.append('user_correo', email);
+        try {
+            const confirmCorreo = await fetchData('cliente', 'checkCorreo', formData);
+            // Validar y usar la respuesta de tallas
+            if (confirmCorreo.status) {
+                console.log('El usuario con correo existe', confirmCorreo);
+                const sendCorreo = await fetchData('cliente', 'enviarCodigoRecuperacion', formData);
+                if (sendCorreo.status) {
+                    Alert.alert('Éxito', 'El código ha sido enviado correctamente al correo electrónico');
+                    setCodeSend(sendCorreo.codigo);
+                    console.log('Código: ', sendCorreo.codigo);
+                    // Navegar a la pantalla 'CodigoContra' y pasar el código y el correo como parámetros
+                    navigation.navigate('CodigoContra', { codigo: sendCorreo.codigo, email: email });
+                    return true;
+                } else {
+                    Alert.alert('Error', sendCorreo.error);
+                    return false;
+                }
+            } else {
+                Alert.alert('No se encontró el usuario', 'Necesita un usuario con ese correo electrónico para restablecer su contraseña');
+                return false;
+            }
+    
+        } catch (error) {
+            console.error(error);
+            Alert.alert('Error', 'Hubo un problema al enviar el código.');
+            return false;
+        }
+    };
+    
+
 
     // Función para manejar el envío del código de recuperación
     const handleSendCode = () => {
@@ -47,7 +83,7 @@ const Recuperacion = ({ navigation }) => {
                     />
                     <ButtonAction
                         mode="contained"
-                        onPress={handleSendCode}
+                        onPress={mandarCodigo}
                         style={styles.actionButton}
                     >
                         Enviar código

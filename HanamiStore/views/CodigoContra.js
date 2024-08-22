@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, TextInput, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Image, TextInput, ScrollView, Alert } from 'react-native';
 import ButtonAction from '../components/ButtonAction';
+import fetchData from "../utils/fechdata";
 
-const CodigoContra = ({ navigation }) => {
-    const [email, setEmail] = useState(''); // Estado para almacenar el correo electrónico ingresado
+const CodigoContra = ({ navigation, route }) => {
+    const { codigo } = route.params; // Recibe el código pasado desde la pantalla anterior
+    const [codigoIngresado, setCodigoIngresado] = useState('');
 
     return (
         <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -30,6 +32,7 @@ const CodigoContra = ({ navigation }) => {
                             maxLength={1}
                             style={styles.inputCode}
                             textAlign='center'
+                            onChangeText={(text) => setCodigoIngresado(codigoIngresado + text)}
                         />
                         <TextInput
                             placeholder='2'
@@ -37,6 +40,7 @@ const CodigoContra = ({ navigation }) => {
                             maxLength={1}
                             style={styles.inputCode}
                             textAlign='center'
+                            onChangeText={(text) => setCodigoIngresado(codigoIngresado + text)}
                         />
                         <TextInput
                             placeholder='3'
@@ -44,6 +48,7 @@ const CodigoContra = ({ navigation }) => {
                             maxLength={1}
                             style={styles.inputCode}
                             textAlign='center'
+                            onChangeText={(text) => setCodigoIngresado(codigoIngresado + text)}
                         />
                         <TextInput
                             placeholder='4'
@@ -51,13 +56,18 @@ const CodigoContra = ({ navigation }) => {
                             maxLength={1}
                             style={styles.inputCode}
                             textAlign='center'
+                            onChangeText={(text) => setCodigoIngresado(codigoIngresado + text)}
                         />
                     </View>
                     <ButtonAction
                         mode="contained"
                         onPress={() => {
-                            // Lógica para verificar el código y proceder a la siguiente pantalla
-                            navigation.navigate('NuevaContra');
+                            // Compara el código ingresado con el código recibido
+                            if (codigoIngresado === codigo) {
+                                navigation.navigate('NuevaContra');
+                            } else {
+                                Alert.alert('Error', 'El código ingresado no es correcto');
+                            }
                         }}
                         style={styles.actionButton}
                     >
@@ -68,6 +78,7 @@ const CodigoContra = ({ navigation }) => {
         </ScrollView>
     );
 };
+
 
 // Estilos para el componente CodigoContra
 const styles = StyleSheet.create({
