@@ -7,10 +7,32 @@ import ProductoCard from '../components/ProductoCard';
 import { useRoute, useNavigation } from '@react-navigation/native';
 
 const Dashboard = () => {
+  const [nombre, setNombre] = useState("");
   const navigation = useNavigation();
   const route = useRoute();
   const [dataNewProducts, setDataNewProducts] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
+
+  // Función asincrónica para obtener datos del perfil desde la API
+  const getPerfilData = async () => {
+    try {
+      const DATA = await fetchData("cliente", "getProfile");
+      if (DATA.status) {
+        const usuario = DATA.data; // Obtención de datos del usuario desde la respuesta
+        if (usuario) {
+          setNombre(usuario.nombre_cliente || "");
+        } else {
+          Alert.alert("Error", "Datos del usuario no disponibles");
+        }
+      } else {
+        console.log(DATA.error);
+        Alert.alert("Error", DATA.error);
+      }
+    } catch (error) {
+      console.error(error);
+      Alert.alert("Error", "Ocurrió un error al obtener la información del perfil");
+    }
+  };
 
   const getNewProducts = async () => {
     try {
@@ -41,26 +63,18 @@ const Dashboard = () => {
 
   useEffect(() => {
     getNewProducts();
+    getPerfilData();
   }, []);
 
   return (
     <View style={{ flex: 1 }}>
-      <Appbar.Header>
-        <Appbar.Action icon="menu" onPress={openDrawer} />
-        <Appbar.Content title="Dashboard" />
-      </Appbar.Header>
 
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.welcomeText}>¡Bienvenido/a!</Text>
-          <Text style={styles.nameText}>{route.params?.nombrePerfil}</Text>
+          <Text style={styles.nameText}>{nombre}</Text> 
         </View>
 
-        <TextInput
-          placeholder="Buscar productos"
-          left={<TextInput.Icon name="card-search-outline" />}
-          style={styles.searchInput}
-        />
 
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Productos más recientes</Text>

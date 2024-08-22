@@ -54,7 +54,7 @@ const LoginScreen = ({ navigation }) => {
             if (DATA.status) {
                 setPassword("");
                 setEmail("");
-                navigation.replace("Dashboard"); // Redirige al dashboard si el inicio de sesión es exitoso
+                navigation.replace("Drawer"); // Redirige al dashboard si el inicio de sesión es exitoso
             } else {
                 // Mostrar un mensaje de error específico al usuario
                 Alert.alert("Error", DATA.error);
@@ -71,7 +71,7 @@ const LoginScreen = ({ navigation }) => {
             const DATA = await fetchData("cliente", "logOut");
             if (DATA.status) {
                 Alert.alert("Sesión cerrada", "Has cerrado sesión exitosamente.");
-                navigation.replace("Login"); // Redirige a la pantalla de inicio de sesión
+                navigation.replace("Cuenta"); // Redirige a la pantalla de inicio de sesión
             } else {
                 Alert.alert("Error", "Ocurrió un error al cerrar sesión");
             }

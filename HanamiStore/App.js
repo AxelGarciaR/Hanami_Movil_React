@@ -29,7 +29,13 @@ function CustomDrawerContent(props) {
   return (
     <DrawerContentScrollView {...props}>
       <DrawerItemList {...props} />
-      <DrawerItem
+
+    </DrawerContentScrollView>
+  );
+}
+
+/*
+<DrawerItem
         label="Inicio"
         onPress={() => props.navigation.navigate('Dashboard')}
       />
@@ -45,9 +51,7 @@ function CustomDrawerContent(props) {
         label="Perfil"
         onPress={() => props.navigation.navigate('Perfil')}
       />
-    </DrawerContentScrollView>
-  );
-}
+*/
 
 // Función para el navegador de cajón (drawer navigator)
 function DrawerNavigator() {
@@ -57,6 +61,7 @@ function DrawerNavigator() {
       <Drawer.Screen name="Productos" component={Productos} />
       <Drawer.Screen name="Historia" component={Carrito} />
       <Drawer.Screen name="Perfil" component={Perfil} />
+      <Drawer.Screen name="MisProductos" component={MisProductos} />
     </Drawer.Navigator>
   );
 }
