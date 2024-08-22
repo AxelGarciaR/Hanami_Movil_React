@@ -1,19 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useCallback, useState } from 'react';
 import { View, ScrollView, StyleSheet, FlatList, RefreshControl, Alert } from 'react-native';
-import { Text, Card, IconButton, Button } from 'react-native-paper';
+import { Text, Button } from 'react-native-paper';
 import ButtonAction from '../components/ButtonAction';
 import CarritoProductoCard from '../components/CarritoProductoCard';
 import fetchData from "../utils/fechdata";
 import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native'; // Asegúrate de que esta línea esté presente
 
 const MisProductos = () => {
   const navigation = useNavigation();
-  const [dataProductos, setDataProductos] = useState([]); // Estado para almacenar los productos más recientes
-  const [refreshing, setRefreshing] = useState(false); // Estado para controlar el estado de refrescado de la lista
+  const [dataProductos, setDataProductos] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
   const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   // Función para obtener productos desde la API
   const fetchCartItems = async () => {
+    setLoading(true);
     try {
       const DATA = await fetchData('detalle_ordenes', 'readDetail');
       if (DATA.status) {
@@ -21,7 +24,7 @@ const MisProductos = () => {
         calculateTotal(DATA.dataset);
       } else {
         console.log(DATA.error);
-        if (DATA.error == "No existen productos en el carrito") {
+        if (DATA.error === "No existen productos en el carrito") {
           setTotal(0);
         }
       }
@@ -39,18 +42,16 @@ const MisProductos = () => {
     items.forEach(item => {
       const precio = parseFloat(item.precio_unitario);
       const cantidad = parseInt(item.cantidad);
-      console.log(`Producto: ${item.Nombre_Producto}, Precio: ${precio}, Cantidad: ${cantidad}`);
       if (!isNaN(precio) && !isNaN(cantidad)) {
         totalAmount += precio * cantidad;
       }
     });
-    console.log(`Total calculado: ${totalAmount}`);
     setTotal(totalAmount);
   };
 
   // Función asincrónica para finalizar la compra.
   const finishOrder = async () => {
-    if (!dataProductos.length == 0) {
+    if (dataProductos.length > 0) {
       Alert.alert(
         'Confirmación',
         '¿Está seguro de finalizar el pedido?',
@@ -64,11 +65,10 @@ const MisProductos = () => {
             onPress: async () => {
               try {
                 const DATA = await fetchData('detalle_ordenes', 'finishOrder');
-
                 if (DATA.status) {
                   Alert.alert('Éxito', DATA.message, [{ text: 'OK', onPress: () => navigation.navigate('Dashboard') }]);
                   setDataProductos([]);
-                  fetchCartItems();
+                  setTotal(0);
                 } else {
                   Alert.alert('Error', DATA.error);
                 }
@@ -87,19 +87,15 @@ const MisProductos = () => {
 
   // Función para manejar la recarga de productos
   const onRefresh = () => {
-    setRefreshing(true); // Activación del indicador de recarga
-    // Simulando una recarga de datos con tiempo de espera
-    setTimeout(() => {
-      fetchCartItems(); // Llamada para obtener productos actualizados
-      setRefreshing(false); // Desactivación del indicador de recarga
-    }, 200); // Tiempo de espera para la recarga
+    setRefreshing(true);
+    fetchCartItems().finally(() => setRefreshing(false));
   };
 
-  // Efecto para cargar los productos más recientes al cargar el componente
-  useEffect(() => {
-    fetchCartItems();
-  }, []);
-
+  useFocusEffect(
+    useCallback(() => {
+      fetchCartItems();
+    }, [])
+  );
 
   // Valores fijos para descuento y envío
   const descuento = 50.00;
@@ -118,7 +114,6 @@ const MisProductos = () => {
         data={dataProductos}
         keyExtractor={(item) => item.id_detalle.toString()}
         numColumns={1}
-        columnWrapperStyle={styles.flatlistColumnWrapper}
         renderItem={({ item }) => (
           <CarritoProductoCard
             idProducto={item.id_detalle}
@@ -128,10 +123,9 @@ const MisProductos = () => {
           />
         )}
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} /> // Componente de control de refresco
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       />
-
 
       <View style={styles.summaryContainer}>
         <Text style={styles.summaryText}>Resumen de pago</Text>
@@ -151,7 +145,6 @@ const MisProductos = () => {
           <Text>Total</Text>
           <Text>${(total - descuento + envio).toFixed(2)}</Text>
         </View>
-
 
         <ButtonAction icon="credit-card" onPress={finishOrder}>
           Pagar
@@ -173,19 +166,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 16,
   },
-
-  productImage: {
-    width: 50,
-    height: 50,
-    marginRight: 16,
-  },
-  productInfo: {
-    flex: 1,
-  },
-  quantityContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 8,
+  flatlist: {
+    width: '100%',
   },
   summaryContainer: {
     marginTop: 32,

@@ -5,8 +5,8 @@ import fetchData from "../utils/fechdata";
 import ButtonAction from './ButtonAction'; // Ajusta la ruta según sea necesario
 
 const ProductoItem = ({ descripcion_producto, Nombre_Producto, precio_producto, CantidadP, idProducto, navigation }) => {
-
   const [dialogVisible, setDialogVisible] = useState(false); // Estado para controlar la visibilidad del diálogo de confirmación
+  const [cantidadSoli, setCantidadSoli] = useState(""); // Estado para la cantidad solicitada
 
   // Función para ocultar el diálogo de confirmación
   const hideDialog = () => {
@@ -18,17 +18,28 @@ const ProductoItem = ({ descripcion_producto, Nombre_Producto, precio_producto, 
     setDialogVisible(true);
   };
 
-  const [cantidadSoli, setCantidadSoli] = useState(""); // Estado para la cantidad disponible del producto
-
   const agregarAlCarrito = async () => {
+    // Convertir cantidad solicitada a número
+    const cantidadSolicitada = parseInt(cantidadSoli);
+
+    // Verificar si la cantidad solicitada es un número y está dentro del límite
+    if (isNaN(cantidadSolicitada) || cantidadSolicitada <= 0) {
+      Alert.alert("Error", "La cantidad solicitada debe ser un número positivo.");
+      return;
+    }
+    if (cantidadSolicitada > CantidadP) {
+      Alert.alert("Error", "La cantidad solicitada excede el stock disponible.");
+      return;
+    }
+
     try {
       const FORM = new FormData();
       FORM.append("idProducto", idProducto);
-      FORM.append("cantidadProducto", cantidadSoli); // Cantidad fija por ahora
+      FORM.append("cantidadProducto", cantidadSoli); // Cantidad solicitada
       const data = await fetchData('detalle_ordenes', 'createDetail', FORM);
       if (data.status) {
         Alert.alert("Agregado al carrito con éxito");
-        agregarCarrito();
+        hideDialog();
         navigation.navigate('MisProductos'); // Navegamos a la pantalla del carrito
       } else {
         Alert.alert("Error al agregar productos al carrito");
@@ -61,12 +72,10 @@ const ProductoItem = ({ descripcion_producto, Nombre_Producto, precio_producto, 
           label="Cantidad solicitada"
           value={cantidadSoli}
           style={styles.input}
+          keyboardType="numeric"
           onChangeText={text => setCantidadSoli(text)}
         />
-
       </Card.Content>
-
-
 
       <Card.Actions style={styles.actions}>
         <Button
@@ -91,7 +100,6 @@ const ProductoItem = ({ descripcion_producto, Nombre_Producto, precio_producto, 
           </Dialog.Actions>
         </Dialog>
       </Portal>
-
     </Card>
   );
 };
@@ -139,7 +147,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderStyle: 'Solid',
     padding: 5,
-
   },
   button: {
     margin: 4,

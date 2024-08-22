@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { View, ScrollView, StyleSheet, Text, Alert, FlatList, RefreshControl } from 'react-native';
-import { Appbar, TextInput } from 'react-native-paper';
 import { DrawerActions } from '@react-navigation/drawer';
 import fetchData from "../utils/fechdata";
 import ProductoCard from '../components/ProductoCard';
-import { useRoute, useNavigation } from '@react-navigation/native';
+import { useRoute, useNavigation, useFocusEffect } from '@react-navigation/native';
 
 const Dashboard = () => {
   const [nombre, setNombre] = useState("");
@@ -13,23 +12,20 @@ const Dashboard = () => {
   const [dataNewProducts, setDataNewProducts] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
 
-  // Función asincrónica para obtener datos del perfil desde la API
   const getPerfilData = async () => {
     try {
       const DATA = await fetchData("cliente", "getProfile");
       if (DATA.status) {
-        const usuario = DATA.data; // Obtención de datos del usuario desde la respuesta
+        const usuario = DATA.data;
         if (usuario) {
           setNombre(usuario.nombre_cliente || "");
         } else {
           Alert.alert("Error", "Datos del usuario no disponibles");
         }
       } else {
-        console.log(DATA.error);
         Alert.alert("Error", DATA.error);
       }
     } catch (error) {
-      console.error(error);
       Alert.alert("Error", "Ocurrió un error al obtener la información del perfil");
     }
   };
@@ -40,46 +36,39 @@ const Dashboard = () => {
       if (DATA.status) {
         setDataNewProducts(DATA.dataset);
       } else {
-        console.log("Data en el ELSE error productos", DATA);
         Alert.alert("Error productos", DATA.error);
       }
     } catch (error) {
-      console.error(error, "Error desde Catch");
       Alert.alert("Error", "Ocurrió un error al listar los productos");
     }
   };
 
   const onRefresh = () => {
     setRefreshing(true);
-    setTimeout(() => {
-      getNewProducts();
-      setRefreshing(false);
-    }, 200);
+    getNewProducts().finally(() => setRefreshing(false));
   };
 
   const openDrawer = () => {
-    navigation.dispatch(DrawerActions.openDrawer()); // Asegúrate de importar DrawerActions
+    navigation.dispatch(DrawerActions.openDrawer());
   };
 
-  useEffect(() => {
-    getNewProducts();
-    getPerfilData();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      getNewProducts();
+      getPerfilData();
+    }, [])
+  );
 
   return (
     <View style={{ flex: 1 }}>
-
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.welcomeText}>¡Bienvenido/a!</Text>
-          <Text style={styles.nameText}>{nombre}</Text> 
+          <Text style={styles.nameText}>{nombre}</Text>
         </View>
-
-
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Productos más recientes</Text>
         </View>
-
         <View style={styles.productContainer}>
           <FlatList
             style={styles.flatlist}
@@ -105,15 +94,13 @@ const Dashboard = () => {
   );
 };
 
-
-// Estilos para el componente Dashboard
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFF',
     paddingHorizontal: 20,
     marginTop: 20,
-    paddingBottom: 200, // Padding adicional en la parte inferior
+    paddingBottom: 200,
   },
   header: {
     marginTop: 20,
@@ -130,10 +117,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
   },
-  searchInput: {
-    marginBottom: 20,
-    backgroundColor: '#F5F5F5',
-  },
   section: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -149,13 +132,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-  },
-  productCard: {
-    width: '100%',
-    backgroundColor: '#E0E0E0', // Color modificado para visibilidad
-    marginBottom: 20,
-    borderRadius: 10,
-    padding: 10,
   },
   flatlist: {
     width: '100%',
